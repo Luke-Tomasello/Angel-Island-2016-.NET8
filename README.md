@@ -19,6 +19,10 @@ Rebuild, launch, and play.
 Getting Started: https://youtu.be/phI7P_xmD_8<br/>
 An Easter Egg: https://youtu.be/j-IV5Ct8VlU
 
+# Z-Machine
+
+Note: The Z-Machine only runs on Angel Island framework 4.7.2 (needs porting to the .NET 8 version).
+
 # .NET 8
 
 If you're looking for the .NET Framework 4.7.2 version, find it here: https://github.com/Luke-Tomasello/Angel-Island-2017-FW472
