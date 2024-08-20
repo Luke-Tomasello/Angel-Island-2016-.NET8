@@ -21,6 +21,8 @@
 
 /* Scripts\Mobiles\Base\BaseHuman.cs
  * ChangeLog
+ *  8/20/2024, Adam
+ *      Update DumbIO with new IZMachineIO
  *  7/21/08, Adam
  *      Thread is not user-suspended; it cannot be resumed.
  *          at System.Threading.Thread.ResumeInternal()
@@ -319,9 +321,35 @@ namespace Server.Mobiles
             {
                 m_conversation = conversation;
             }
+            public bool DrawCustomStatusLine(string location, short hoursOrScore, short minsOrTurns, bool useTime)
+            {
+                return false;
+            }
+            public bool VariablePitchAvailable => false;
 
+            public bool ScrollFromBottom
+            {
+                get => false;
+                set { /* nada */ }
+            }
+            public ReadLineResult ReadLine(string initial, int time, TimedInputCallback callback,
+                byte[] terminatingKeys, bool allowDebuggerBreak)
+            {
+                //var text = Console.ReadLine() ?? "";
+                byte terminator = 0;
+                var text = this.ReadLine(initial, time, callback, terminatingKeys, out terminator);
+
+                if (allowDebuggerBreak &&
+                    (text.Equals("/break", StringComparison.CurrentCultureIgnoreCase) ||
+                     text.Equals("/b", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    return ReadLineResult.DebuggerBreak;
+                }
+
+                return ReadLineResult.LineEntered(text);
+            }
             public string ReadLine(string initial, int time, TimedInputCallback callback, byte[] terminatingKeys, out byte terminator)
-            {   // flush any waiting input and pause thie thread while it is looking for input
+            {   // flush any waiting input and pause this thread while it is looking for input
                 if (m_temp != null && m_temp.Length > 0) { m_conversation.WriteLine(m_temp); m_temp = ""; }
                 this.m_conversation.Suspend();
 
