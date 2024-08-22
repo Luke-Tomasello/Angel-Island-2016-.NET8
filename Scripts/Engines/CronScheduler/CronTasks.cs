@@ -2099,13 +2099,13 @@ namespace Server.Engines.CronScheduler
 
                 // Adam: lets keep the above code around for future needs, but for now lets use our mailing list
                 //	NOTE: If you change this make sure to remove the password from the subject line
-                string password = Environment.GetEnvironmentVariable("DISTLIST_PASSWORD");
+                string password = Environment.GetEnvironmentVariable("AI.EMAIL.DISTLIST.PASSWORD");
                 if (password == null || password.Length == 0)
                     throw new ApplicationException("the password for distribution list access is not set.");
                 Reminders = 1;
                 iChecked = 1;
                 results.Clear();
-                results.Add("announcements@game-master.net");
+                results.Add(Environment.GetEnvironmentVariable("AI.EMAIL.ANNOUNCEMENTS"));
 
                 if (Reminders > 0)
                 {
@@ -2266,13 +2266,13 @@ namespace Server.Engines.CronScheduler
 
                 // Adam: lets keep the above code around for future needs, but for now lets use our mailing list
                 //	NOTE: If you change this make sure to remove the password from the subject line
-                string password = Environment.GetEnvironmentVariable("DISTLIST_PASSWORD");
+                string password = Environment.GetEnvironmentVariable("AI.EMAIL.DISTLIST.PASSWORD");
                 if (password == null || password.Length == 0)
                     throw new ApplicationException("the password for distribution list access is not set.");
                 Reminders = 1;
                 iChecked = 1;
                 results.Clear();
-                results.Add("announcements@game-master.net");
+                results.Add(Environment.GetEnvironmentVariable("AI.EMAIL.ANNOUNCEMENTS"));
 
                 if (Reminders > 0)
                 {
@@ -2372,13 +2372,13 @@ namespace Server.Engines.CronScheduler
 
                 // Adam: lets keep the above code around for future needs, but for now lets use our mailing list
                 //	NOTE: If you change this make sure to remove the password from the subject line
-                string password = Environment.GetEnvironmentVariable("DISTLIST_PASSWORD");
+                string password = Environment.GetEnvironmentVariable("AI.EMAIL.DISTLIST.PASSWORD");
                 if (password == null || password.Length == 0)
                     throw new ApplicationException("the password for distribution list access is not set.");
                 Reminders = 1;
                 iChecked = 1;
                 results.Clear();
-                results.Add("announcements@game-master.net");
+                results.Add(Environment.GetEnvironmentVariable("AI.EMAIL.ANNOUNCEMENTS"));
 
                 if (Reminders > 0)
                 {

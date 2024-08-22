@@ -329,7 +329,7 @@ namespace Server.Gumps
                                         regBody += "\n";
 
                                         Emailer mail = new Emailer();
-                                        mail.SendEmail("aiaccounting@game-master.net", regSubject, regBody, false);
+                                        mail.SendEmail(Environment.GetEnvironmentVariable("AI.EMAIL.ACCOUNTING"), regSubject, regBody, false);
 
                                         if (m_Account.AccountActivated &&
                                             newemail.ToLower() != m_Account.EmailAddress.ToLower())
@@ -507,7 +507,7 @@ namespace Server.Gumps
                                             regBody += "\n";
 
                                             mail = new Emailer();
-                                            mail.SendEmail("aiaccounting@game-master.net", regSubject, regBody, false);
+                                            mail.SendEmail(Environment.GetEnvironmentVariable("AI.EMAIL.ACCOUNTING"), regSubject, regBody, false);
 
                                             //Notify user
                                             m_From.SendMessage(0x35, "Your new password has been sent to " + m_Account.EmailAddress);
