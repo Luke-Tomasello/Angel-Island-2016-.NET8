@@ -74,7 +74,7 @@ namespace Server
 {
     public class Utility
     {
-        public static class Console
+        public static class Monitor
         {
             public static void Write(string text, ConsoleColor color)
             {
@@ -83,6 +83,10 @@ namespace Server
                 System.Console.Write(text);
                 PopColor();
                 System.Console.Out.Flush();
+            }
+            public static void WriteLine(string format, ConsoleColor color, params object[] args)
+            {
+                Monitor.WriteLine(string.Format(format, args), color);
             }
             public static void WriteLine(string text, ConsoleColor color)
             {

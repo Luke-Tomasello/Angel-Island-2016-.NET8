@@ -1026,9 +1026,9 @@ namespace Server
 #endif
             #region Email
             if (EmailCheck() == true)
-                Utility.Console.WriteLine("[All of the required Email environment variables are set.]", ConsoleColor.White);
+                Utility.Monitor.WriteLine("[All of the required Email environment variables are set.]", ConsoleColor.White);
             else
-                Utility.Console.WriteLine("[Some or all of the required Email environment variables are not set.]", ConsoleColor.Red);
+                Utility.Monitor.WriteLine("[Some or all of the required Email environment variables are not set.]", ConsoleColor.Red);
             #endregion Email
 
             if (Core.BoatHoldUpgrade == true)
@@ -1146,9 +1146,7 @@ namespace Server
         private static void Tick(object state)
         {
             object[] aState = (object[])state;
-            Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Timers initialized");
-            Utility.PopColor();
+            Utility.Monitor.WriteLine("Timers initialized", ConsoleColor.Green);
         }
         public static bool EmailCheck()
         {
