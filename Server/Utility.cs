@@ -135,7 +135,7 @@ namespace Server
 
                 return false;
             }
-
+#if false
             public static bool InaccessibleMapLoc(Point3D p, Map map)
             {
                 RecallRune marker = new RecallRune();
@@ -162,7 +162,7 @@ namespace Server
 
                 return !found;
             }
-
+#endif
             public static Rectangle2D[] GetWrapFor(Map map)
             {
                 if (map == Map.Ilshenar)

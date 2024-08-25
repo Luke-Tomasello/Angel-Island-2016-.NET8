@@ -128,8 +128,12 @@ namespace Server.SMTP
                     if (address.IndexOf(',') >= 0 || address.IndexOf(';') >= 0)
                         return false;
 
+#if NET472
+                    // no email addy checker for 472
+#else
                     if (IsValidEmail(address) == false)
                         return false;
+#endif
                 }
 
                 MailMessage message = new MailMessage();
@@ -142,6 +146,10 @@ namespace Server.SMTP
             // good form
             return true;
         }
+
+#if NET472
+        // no email addy checker for 472
+#else
         public static bool IsValidEmail(string email)
         {
             if (!MailAddress.TryCreate(email, out var mailAddress))
@@ -163,6 +171,7 @@ namespace Server.SMTP
 
             return true;
         }
+#endif
         // convert a normal semicolon delimited list of emails addresses...
         public static string ClassicList(string list)
         {
