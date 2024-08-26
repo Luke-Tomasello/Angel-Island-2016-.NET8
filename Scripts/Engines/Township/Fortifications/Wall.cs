@@ -21,6 +21,10 @@
 
 /* Engines/Township/Fortifications/Walls.cs
  * CHANGELOG:
+ *  8/26/2024, Adam
+ *      1. BaseFortificationWall now saves a reference to the TownshipStone to which it belongs.
+ *      2. BaseFortificationWall is now ITownshipItem
+ *      We use this to cleanup all ITownshipItems when the stone is deleted.
  * 2010.05.24 - Pix
  *      Code cleanup (renaming functions/classes to make sense, reorganizing for easier reading)
  *      Moves Stone and Spear walls to separate files.
@@ -57,12 +61,21 @@ using Server.Regions;
 
 namespace Server.Township
 {
+    public interface ITownshipItem
+    {
+        public TownshipStone Stone
+        {
+            get;
+            set;
+        }
+    }
+
     #region Base Wall Class
 
-    public class BaseFortificationWall : Item
+    public class BaseFortificationWall : Item, ITownshipItem
     {
         #region Member Variables
-
+        private TownshipStone m_TownshipStone = null;
         private DateTime m_PlacementDate = DateTime.MinValue;
         private Mobile m_Placer = null;
         private int m_OriginalMaxHits = 100;
@@ -98,7 +111,7 @@ namespace Server.Township
 
                     TownshipRegion tr = TownshipRegion.GetTownshipAt(wall.Location, wall.Map);
 
-                    if (tr == null || wall.Hits < 0)
+                    if (tr == null || wall.Hits < 0 || OrphanWall(wall))
                     {
                         deleted++;
                         wall.Delete();
@@ -111,24 +124,38 @@ namespace Server.Township
             }
             return deleted;
         }
+        private static bool OrphanWall(BaseFortificationWall wall)
+        {
+            if (wall is ITownshipItem ts)
+            {
+                if (ts.Stone == null || ts.Stone.Deleted)
+                    return true;
+            }
+            else
+                return true;
+
+            return false;
+        }
 
         #endregion
 
         #region Constructors
 
-        public BaseFortificationWall()
+        public BaseFortificationWall(TownshipStone stone)
             : base(0x27C)
         {
             Movable = false;
             Weight = 150;
             TownshipWallList.Add(this);
+            Stone = stone;
         }
 
-        public BaseFortificationWall(int itemID)
+        public BaseFortificationWall(TownshipStone stone, int itemID)
             : base(itemID)
         {
             Movable = false;
             TownshipWallList.Add(this);
+            Stone = stone;
         }
 
         public BaseFortificationWall(Serial serial)
@@ -166,7 +193,12 @@ namespace Server.Township
         #endregion
 
         #region Properties
-
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.Owner)]
+        public TownshipStone Stone
+        {
+            get { return m_TownshipStone; }
+            set { m_TownshipStone = value; }
+        }
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
         public Mobile Placer
         {
@@ -782,8 +814,12 @@ namespace Server.Township
         {
             base.Serialize(writer);
 
-            writer.Write(1); //version
+            writer.Write(2); //version
 
+            // version 2
+            writer.Write(this.m_TownshipStone);
+
+            // version 1
             writer.Write(this.m_LastDamage);
             //Version 0 below :)
             writer.Write((int)this.m_RepairSkill);
@@ -803,6 +839,9 @@ namespace Server.Township
 
             switch (version)
             {
+                case 2:
+                    m_TownshipStone = (TownshipStone)reader.ReadItem();
+                    goto case 1;
                 case 1:
                     m_LastDamage = reader.ReadDateTime();
                     goto case 0;
