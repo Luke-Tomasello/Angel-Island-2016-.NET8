@@ -231,7 +231,7 @@ namespace Server.Mobiles
                         // http://www.uoguide.com/Savage_Empire
                         // http://uo.stratics.com/secrets/archive/orcsavage.shtml
                         // Bola balls have appeared as loot on Orc Bombers. Balls on Bombers are rather common, around a 50/50% chance of getting a ball or not. They are only appearing as loot on bombers.
-                        if (Core.PublishDate >= Core.EraSAVE)
+                        if (PublishInfo.PublishDate >= Core.EraSAVE)
                             if (Utility.RandomBool())
                                 PackItem(new BolaBall());
                     }
@@ -249,7 +249,7 @@ namespace Server.Mobiles
                         // http://www.uoguide.com/Savage_Empire
                         // http://uo.stratics.com/secrets/archive/orcsavage.shtml
                         // Bola balls have appeared as loot on Orc Bombers. Balls on Bombers are rather common, around a 50/50% chance of getting a ball or not. They are only appearing as loot on bombers.
-                        if (Core.PublishDate >= Core.EraSAVE)
+                        if (PublishInfo.PublishDate >= Core.EraSAVE)
                             if (Utility.RandomBool())
                                 PackItem(new BolaBall());
                     }

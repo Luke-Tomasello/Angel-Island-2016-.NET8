@@ -25,17 +25,26 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="BuildInfo\**" />
 	  <Compile Remove="ZLR.VM\**" />
+	  <EmbeddedResource Remove="BuildInfo\**" />
 	  <EmbeddedResource Remove="ZLR.VM\**" />
+	  <None Remove="BuildInfo\**" />
 	  <None Remove="ZLR.VM\**" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <ProjectReference Include="ZLR.VM\ZLR.VM.csproj" />
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="BuildInfo.exe" />
+	</Target>
 
 </Project>

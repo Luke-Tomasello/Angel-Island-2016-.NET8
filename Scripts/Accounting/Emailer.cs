@@ -85,10 +85,13 @@ namespace Server.Accounting
 
             public void post()
             {
-                if (m_distributionList != null)
-                    ThreadWorkers.DistributionList(this);
-                else
-                    ThreadWorkers.StandardEmail(this);
+                if (Core.EmailCheck())
+                {
+                    if (m_distributionList != null)
+                        ThreadWorkers.DistributionList(this);
+                    else
+                        ThreadWorkers.StandardEmail(this);
+                }
             }
         }
 
