@@ -114,7 +114,7 @@ namespace Server.PathAlgorithms.Sector
                 try
                 {
                     Console.Write("Initializing SectorNodes...");
-                    DateTime dt = DateTime.Now;
+                    DateTime dt = DateTime.UtcNow;
 
                     m_Nodes = new SectorNode[Map.Felucca.Width >> Map.SectorShift, Map.Felucca.Height >> Map.SectorShift];
 
@@ -146,9 +146,9 @@ namespace Server.PathAlgorithms.Sector
                         }
                     }
 
-                    Console.WriteLine("done in {0} seconds.", (DateTime.Now - dt).TotalSeconds);
+                    Console.WriteLine("done in {0} seconds.", (DateTime.UtcNow - dt).TotalSeconds);
                     Console.Write("Computing SectorNode network...");
-                    dt = DateTime.Now;
+                    dt = DateTime.UtcNow;
 
                     Mobile m = new Server.Mobiles.WanderingHealer();
                     MovementPath mp = null;
@@ -214,9 +214,9 @@ namespace Server.PathAlgorithms.Sector
 
                     m.Delete();
 
-                    Console.WriteLine("done in {0} seconds.", (DateTime.Now - dt).TotalSeconds);
+                    Console.WriteLine("done in {0} seconds.", (DateTime.UtcNow - dt).TotalSeconds);
                     Console.Write("Finding islands...");
-                    dt = DateTime.Now;
+                    dt = DateTime.UtcNow;
 
                     int nextIsland = 0;
                     Queue open = new Queue();
@@ -254,7 +254,7 @@ namespace Server.PathAlgorithms.Sector
                         }
                     }
 
-                    Console.WriteLine("done in {0} seconds.", (DateTime.Now - dt).TotalSeconds);
+                    Console.WriteLine("done in {0} seconds.", (DateTime.UtcNow - dt).TotalSeconds);
                 }
                 catch (Exception ex)
                 {
@@ -270,7 +270,7 @@ namespace Server.PathAlgorithms.Sector
             try
             {
                 Console.Write("Loading SectorNodes...");
-                DateTime dt = DateTime.Now;
+                DateTime dt = DateTime.UtcNow;
                 using (FileStream fs = new FileStream("Data/SectorPathData.dat", FileMode.Open))
                 {
                     using (BinaryReader br = new BinaryReader(fs))
@@ -303,7 +303,7 @@ namespace Server.PathAlgorithms.Sector
                         reader.Close();
                     }
                 }
-                Console.WriteLine("done in {0}ms.", (DateTime.Now - dt).TotalMilliseconds);
+                Console.WriteLine("done in {0}ms.", (DateTime.UtcNow - dt).TotalMilliseconds);
             }
             catch (Exception e)
             {
@@ -320,7 +320,7 @@ namespace Server.PathAlgorithms.Sector
             try
             {
                 Console.Write("Saving SectorNodes...");
-                DateTime dt = DateTime.Now;
+                DateTime dt = DateTime.UtcNow;
                 if (!Directory.Exists("Data"))
                     Directory.CreateDirectory("Data");
 
@@ -341,7 +341,7 @@ namespace Server.PathAlgorithms.Sector
 
                     writer.Close();
                 }
-                Console.WriteLine("done in {0}ms.", (DateTime.Now - dt).TotalMilliseconds);
+                Console.WriteLine("done in {0}ms.", (DateTime.UtcNow - dt).TotalMilliseconds);
             }
             catch (Exception ex)
             {
@@ -548,7 +548,7 @@ namespace Server.PathAlgorithms.Sector
 
         public static Point3D[] FindWaypoints(Mobile m, Map map, Point3D start, Point3D goal)
         {
-            DateTime s = DateTime.Now;
+            DateTime s = DateTime.UtcNow;
             if (m_Nodes == null)
                 return null; // sanity check
 

@@ -195,7 +195,7 @@ namespace Server.Regions
                 {
                     AggressorInfo info = (AggressorInfo)m.Aggressed[i];
 
-                    if (info.Defender.Player && (DateTime.Now - info.LastCombatTime) < CombatHeatDelay)
+                    if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
                         return base.GetLogoutDelay(m);
                 }
 
@@ -219,7 +219,7 @@ namespace Server.Regions
                                     {
                                         AggressorInfo info = (AggressorInfo)m.Aggressed[i];
 
-                                        if (info.Defender.Player && (DateTime.Now - info.LastCombatTime) < CombatHeatDelay)
+                                        if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
                                             return base.GetLogoutDelay(m);
                                     }
 

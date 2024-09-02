@@ -425,7 +425,7 @@ namespace Server.SkillHandlers
 
             public override void OnDisturb(DisturbType type, bool message)
             {
-                Caster.NextSkillTime = DateTime.Now;
+                Caster.NextSkillTime = DateTime.UtcNow;
 
                 base.OnDisturb(type, message);
             }

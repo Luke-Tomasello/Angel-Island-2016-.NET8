@@ -73,7 +73,7 @@ namespace Server.Items
 
             // adam: usual decay time is CoreAI.SpiritDepotRespawnFreq * 10 seconds
             //	See also: ExecuteTrap() where decay is accelerated
-            m_DeleteTime = DateTime.Now + TimeSpan.FromSeconds(CoreAI.SpiritDepotRespawnFreq * 10);
+            m_DeleteTime = DateTime.UtcNow + TimeSpan.FromSeconds(CoreAI.SpiritDepotRespawnFreq * 10);
             m_Timer = new DeleteTimer(this, m_DeleteTime);
             m_Timer.Start();
 
@@ -235,7 +235,7 @@ namespace Server.Items
             private Item m_Item;
 
             public DeleteTimer(Item item, DateTime time)
-                : base(time - DateTime.Now)
+                : base(time - DateTime.UtcNow)
             {
                 m_Item = item;
                 Priority = TimerPriority.OneMinute;
@@ -264,7 +264,7 @@ namespace Server.Items
                 m_Timer = null;
 
                 // adam: once the trap has been tripped, it decays in SpiritDepotRespawnFreq seconds
-                m_DeleteTime = DateTime.Now + TimeSpan.FromSeconds(CoreAI.SpiritDepotRespawnFreq);
+                m_DeleteTime = DateTime.UtcNow + TimeSpan.FromSeconds(CoreAI.SpiritDepotRespawnFreq);
                 from.SendMessage("The chest begins to decay.");
                 m_Timer = new DeleteTimer(this, m_DeleteTime);
                 m_Timer.Start();

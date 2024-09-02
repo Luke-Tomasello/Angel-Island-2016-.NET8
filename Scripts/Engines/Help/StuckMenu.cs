@@ -257,7 +257,7 @@ namespace Server.Menus.Questions
             {
                 AggressorInfo info = (AggressorInfo)m.Aggressed[i];
 
-                if (DateTime.Now - info.LastCombatTime < TimeSpan.FromSeconds(30.0))
+                if (DateTime.UtcNow - info.LastCombatTime < TimeSpan.FromSeconds(30.0))
                     return true;
             }
 
@@ -318,12 +318,12 @@ namespace Server.Menus.Questions
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0))
             {
                 m_Mobile = m;
-                m_End = DateTime.Now + TimeSpan.FromMinutes(3.0);
+                m_End = DateTime.UtcNow + TimeSpan.FromMinutes(3.0);
             }
 
             protected override void OnTick()
             {
-                if (m_Mobile.NetState == null || DateTime.Now > m_End)
+                if (m_Mobile.NetState == null || DateTime.UtcNow > m_End)
                 {
                     m_Mobile.Frozen = false;
                     m_Mobile.CloseGump(typeof(StuckMenu));
@@ -353,8 +353,8 @@ namespace Server.Menus.Questions
                 m_Sender = s;
                 m_Mobile = m;
                 m_Location = loc;
-                m_End = DateTime.Now + delay;
-                m_NextMessage = DateTime.Now + TimeSpan.FromSeconds(5.0);
+                m_End = DateTime.UtcNow + delay;
+                m_NextMessage = DateTime.UtcNow + TimeSpan.FromSeconds(5.0);
                 m_bAdditionalChecks = bAdditionalChecks;
             }
 
@@ -364,7 +364,7 @@ namespace Server.Menus.Questions
                     return; // this is ok because the underlying Timer is set up to be never-ending; TimerMain() will never
                             // call Stop() on us. THIS IS NOT THE GENERAL CASE! Normally this sort of check is BAD.
 
-                if (DateTime.Now > m_End)
+                if (DateTime.UtcNow > m_End)
                 {
                     m_Mobile.Frozen = false;
 

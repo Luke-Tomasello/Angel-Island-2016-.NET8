@@ -230,7 +230,7 @@ namespace Server.Items
 
             // adam: usual decay time is 3 hours
             //	See also: ExecuteTrap() where decay starts
-            m_DeleteTime = DateTime.Now + TimeSpan.FromMinutes(3.0 * 60.0);
+            m_DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(3.0 * 60.0);
 
             m_Timer = new DeleteTimer(this, m_DeleteTime);
             m_Timer.Start();
@@ -640,7 +640,7 @@ namespace Server.Items
             private Item m_Item;
 
             public DeleteTimer(Item item, DateTime time)
-                : base(time - DateTime.Now)
+                : base(time - DateTime.UtcNow)
             {
                 m_Item = item;
                 Priority = TimerPriority.OneMinute;
@@ -685,7 +685,7 @@ namespace Server.Items
             new NpcRecallSpell((tc as DungeonTreasureChest).Guardian, null, new Point3D(0, 0, 0)).Cast();
 
             // delete him
-            DateTime DeleteTime = DateTime.Now + TimeSpan.FromSeconds(3.0);
+            DateTime DeleteTime = DateTime.UtcNow + TimeSpan.FromSeconds(3.0);
             new DeleteGuardianTimer((tc as DungeonTreasureChest).Guardian, DeleteTime).Start();
         }
 
@@ -694,7 +694,7 @@ namespace Server.Items
             private Mobile m_mob;
 
             public DeleteGuardianTimer(Mobile m, DateTime time)
-                : base(time - DateTime.Now)
+                : base(time - DateTime.UtcNow)
             {
                 m_mob = m;
                 Priority = TimerPriority.TwoFiftyMS;
@@ -763,7 +763,7 @@ namespace Server.Items
                 m_Timer = null;
 
                 // adam: once the trap has been tripped, it decays in 15 minutes
-                m_DeleteTime = DateTime.Now + TimeSpan.FromMinutes(1 * 15.0);
+                m_DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(1 * 15.0);
                 from.SendMessage("The chest begins to decay.");
 
                 m_Timer = new DeleteTimer(this, m_DeleteTime);

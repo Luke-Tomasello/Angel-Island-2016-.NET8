@@ -208,12 +208,12 @@ namespace Server.Commands
             {
                 m_Player = pm;
                 Priority = TimerPriority.FiftyMS;
-                m_PauseTime = DateTime.Now;
+                m_PauseTime = DateTime.UtcNow;
             }
 
             protected override void OnTick()
             {
-                if (DateTime.Now < m_PauseTime)
+                if (DateTime.UtcNow < m_PauseTime)
                 {
                     //					Console.WriteLine("Waiting pause time");
                     return;
@@ -229,7 +229,7 @@ namespace Server.Commands
                 {
                     try
                     {
-                        //						Console.WriteLine(DateTime.Now.TimeOfDay);
+                        //						Console.WriteLine(DateTime.UtcNow.TimeOfDay);
                         object obj = m_Player.PlayList.Dequeue();
 
                         // If the first item in the queue is a string, make sure a string 
@@ -263,9 +263,9 @@ namespace Server.Commands
                         {
                             double pause = (double)obj;
                             //							Console.WriteLine(pause);
-                            m_PauseTime = DateTime.Now + TimeSpan.FromSeconds(pause);
+                            m_PauseTime = DateTime.UtcNow + TimeSpan.FromSeconds(pause);
                             //							Console.WriteLine(m_PauseTime);
-                            //							Console.WriteLine(DateTime.Now.TimeOfDay);
+                            //							Console.WriteLine(DateTime.UtcNow.TimeOfDay);
                             return;
                         }
                     }

@@ -470,7 +470,7 @@ namespace Server.Mobiles
                 if (m_Bandage == null)
                     return TimeSpan.MaxValue;
 
-                TimeSpan ts = (m_BandageStart + m_Bandage.Timer.Delay) - DateTime.Now;
+                TimeSpan ts = (m_BandageStart + m_Bandage.Timer.Delay) - DateTime.UtcNow;
 
                 if (ts < TimeSpan.FromSeconds(-1.0))
                 {
@@ -491,7 +491,7 @@ namespace Server.Mobiles
             {
                 m_Bandage = null;
                 m_Bandage = BandageContext.BeginHeal(from, to);
-                m_BandageStart = DateTime.Now;
+                m_BandageStart = DateTime.UtcNow;
                 if (m_Bandage != null)
                 {   // alls well, consume the bandage!
                     Bandage bandage = GetBandage();
@@ -2056,14 +2056,14 @@ namespace Server.Mobiles
                     m_Mobile.FocusMob = null;
                     m_Mobile.Combatant = null;
                     m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
-                    m_NextStopGuard = DateTime.Now + TimeSpan.FromSeconds(10);
+                    m_NextStopGuard = DateTime.UtcNow + TimeSpan.FromSeconds(10);
                     m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
                     break;
 
                 case ActionType.Hunt:
                     m_Mobile.FocusMob = null;
                     m_Mobile.Combatant = null;
-                    m_NextStopHunt = DateTime.Now + TimeSpan.FromSeconds(20);
+                    m_NextStopHunt = DateTime.UtcNow + TimeSpan.FromSeconds(20);
                     break;
 
                 case ActionType.NavStar:
@@ -2243,7 +2243,7 @@ namespace Server.Mobiles
 
         public virtual bool DoActionGuard()
         {
-            if (DateTime.Now < m_NextStopGuard)
+            if (DateTime.UtcNow < m_NextStopGuard)
             {
                 m_Mobile.DebugSay("I am on guard");
                 m_Mobile.Turn(Utility.Random(0, 2) - 1);
@@ -2259,7 +2259,7 @@ namespace Server.Mobiles
 
         public virtual bool DoActionHunt()
         {
-            if (DateTime.Now < m_NextStopHunt)
+            if (DateTime.UtcNow < m_NextStopHunt)
             {
                 m_Mobile.DebugSay("I am Hunting");
                 WalkRandomInHome(2, 2, 1);
@@ -3185,7 +3185,7 @@ namespace Server.Mobiles
 
         public virtual bool DoBardPacified()
         {
-            if (DateTime.Now < m_Mobile.BardEndTime)
+            if (DateTime.UtcNow < m_Mobile.BardEndTime)
             {
                 m_Mobile.DebugSay("I am pacified, I wait");
                 m_Mobile.Combatant = null;
@@ -3203,7 +3203,7 @@ namespace Server.Mobiles
 
         public virtual bool DoBardProvoked()
         {
-            if (DateTime.Now >= m_Mobile.BardEndTime && (m_Mobile.BardMaster == null || m_Mobile.BardMaster.Deleted || m_Mobile.BardMaster.Map != m_Mobile.Map || m_Mobile.GetDistanceToSqrt(m_Mobile.BardMaster) > m_Mobile.RangePerception))
+            if (DateTime.UtcNow >= m_Mobile.BardEndTime && (m_Mobile.BardMaster == null || m_Mobile.BardMaster.Deleted || m_Mobile.BardMaster.Map != m_Mobile.Map || m_Mobile.GetDistanceToSqrt(m_Mobile.BardMaster) > m_Mobile.RangePerception))
             {
                 m_Mobile.DebugSay("I have lost my provoker");
                 m_Mobile.BardProvoked = false;
@@ -3470,7 +3470,7 @@ namespace Server.Mobiles
 
         public virtual bool CheckMove()
         {
-            return (DateTime.Now >= m_NextMove);
+            return (DateTime.UtcNow >= m_NextMove);
         }
 
         public virtual bool DoMove(Direction d)
@@ -3501,10 +3501,10 @@ namespace Server.Mobiles
 
             m_NextMove += delay;
 
-            if (m_NextMove < DateTime.Now)
-                m_NextMove = DateTime.Now;
+            if (m_NextMove < DateTime.UtcNow)
+                m_NextMove = DateTime.UtcNow;
 
-            m_Mobile.DebugSay(CreatureFlags.DebugSpeed, "My current speed is {0}, next move in {1}ms", m_Mobile.CurrentSpeed, ((TimeSpan)(m_NextMove - DateTime.Now)).TotalSeconds);
+            m_Mobile.DebugSay(CreatureFlags.DebugSpeed, "My current speed is {0}, next move in {1}ms", m_Mobile.CurrentSpeed, ((TimeSpan)(m_NextMove - DateTime.UtcNow)).TotalSeconds);
 
             m_Mobile.Pushing = false;
 
@@ -4109,8 +4109,8 @@ namespace Server.Mobiles
             {   // we moved the delay setting code out of AcquireFocusMobWorker(AFM) since we need to call it once for each acqType.
                 // If we were to leave it in AFM then we would only be able to call AFM the first time through the loop.
                 // the new timing model is where are allowed to process ALL acquire types before being forced to wait
-                if (m_Mobile.NextReacquireTime <= DateTime.Now)
-                    m_Mobile.NextReacquireTime = DateTime.Now + m_Mobile.ReacquireDelay;
+                if (m_Mobile.NextReacquireTime <= DateTime.UtcNow)
+                    m_Mobile.NextReacquireTime = DateTime.UtcNow + m_Mobile.ReacquireDelay;
             }
 
             // no one to fight
@@ -4166,7 +4166,7 @@ namespace Server.Mobiles
                 return true;
             }
 
-            if (m_Mobile.NextReacquireTime > DateTime.Now)
+            if (m_Mobile.NextReacquireTime > DateTime.UtcNow)
             {
                 m_Mobile.FocusMob = null;
                 return false;
@@ -4402,7 +4402,7 @@ namespace Server.Mobiles
                 m_Owner = owner;
 
                 //m_bDetectHidden = false;
-                //m_NextDetectHidden = DateTime.Now;
+                //m_NextDetectHidden = DateTime.UtcNow;
 
                 Priority = TimerPriority.FiftyMS;
             }

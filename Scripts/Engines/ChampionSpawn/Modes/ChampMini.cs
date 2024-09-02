@@ -104,7 +104,7 @@ namespace Server.Engines.ChampionSpawn
                 {
                     Kills = 0;
                 }
-                m_ExpireTime = DateTime.Now + Lvl_ExpireDelay;
+                m_ExpireTime = DateTime.UtcNow + Lvl_ExpireDelay;
             }
             else
                 base.Expire();

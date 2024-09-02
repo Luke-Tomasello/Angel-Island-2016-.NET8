@@ -116,9 +116,9 @@ namespace Server
                 m_Profiling = value;
 
                 if (m_ProfileStart > DateTime.MinValue)
-                    m_ProfileTime += DateTime.Now - m_ProfileStart;
+                    m_ProfileTime += DateTime.UtcNow - m_ProfileStart;
 
-                m_ProfileStart = (m_Profiling ? DateTime.Now : DateTime.MinValue);
+                m_ProfileStart = (m_Profiling ? DateTime.UtcNow : DateTime.MinValue);
             }
         }
 
@@ -127,7 +127,7 @@ namespace Server
             get
             {
                 if (m_ProfileStart > DateTime.MinValue)
-                    return m_ProfileTime + (DateTime.Now - m_ProfileStart);
+                    return m_ProfileTime + (DateTime.UtcNow - m_ProfileStart);
 
                 return m_ProfileTime;
             }
@@ -161,7 +161,42 @@ namespace Server
         public static bool BoatHoldUpgrade { get { return m_BoatHoldUpgrade; } }
 
         public static readonly bool Is64Bit = (IntPtr.Size == 8);
+        #region Time Management
+        /* 
+        * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
+        * The resolution is acceptable but large clock jumps are possible and cause issues.
+        * GetTickCount and GetTickCount64 have poor resolution.
+        * GetTickCount64 is unavailable on Windows XP and Windows Server 2003.
+        * Stopwatch.GetTimestamp() (QueryPerformanceCounter) is high resolution, but
+        * somewhat expensive to call because of its deference to DateTime.Now,
+        * which is why Stopwatch has been used to verify HRT before calling GetTimestamp(),
+        * enabling the usage of DateTime.UtcNow instead.
+        */
 
+        private static readonly bool _HighRes = Stopwatch.IsHighResolution;
+
+        private static readonly double _HighFrequency = 1000.0 / Stopwatch.Frequency;
+        private static readonly double _LowFrequency = 1000.0 / TimeSpan.TicksPerSecond;
+
+        private static bool _UseHRT;
+
+        public static bool UsingHighResolutionTiming { get { return _UseHRT && _HighRes && !Unix; } }
+
+        public static long TickCount { get { return (long)Ticks; } }
+
+        public static double Ticks
+        {
+            get
+            {
+                if (_UseHRT && _HighRes && !Unix)
+                {
+                    return Stopwatch.GetTimestamp() * _HighFrequency;
+                }
+
+                return DateTime.UtcNow.Ticks * _LowFrequency;
+            }
+        }
+        #endregion Time Management
         private static bool m_MultiProcessor;
         private static int m_ProcessorCount;
 
@@ -1376,7 +1411,7 @@ namespace Server
             m_FileName = file;
             using (StreamWriter writer = new StreamWriter(new FileStream(m_FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
             {
-                writer.WriteLine(">>>Logging started on {0}.", DateTime.Now.ToString("f")); //f = Tuesday, April 10, 2001 3:51 PM 
+                writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f")); //f = Tuesday, April 10, 2001 3:51 PM 
             }
             m_NewLine = true;
         }
@@ -1387,7 +1422,7 @@ namespace Server
             {
                 if (m_NewLine)
                 {
-                    writer.Write(DateTime.Now.ToString(DateFormat));
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
                     m_NewLine = false;
                 }
                 writer.Write(ch);
@@ -1400,7 +1435,7 @@ namespace Server
             {
                 if (m_NewLine)
                 {
-                    writer.Write(DateTime.Now.ToString(DateFormat));
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
                     m_NewLine = false;
                 }
                 writer.Write(str);
@@ -1412,7 +1447,7 @@ namespace Server
             using (StreamWriter writer = new StreamWriter(new FileStream(m_FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
             {
                 if (m_NewLine)
-                    writer.Write(DateTime.Now.ToString(DateFormat));
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
                 writer.WriteLine(line);
                 m_NewLine = true;
             }

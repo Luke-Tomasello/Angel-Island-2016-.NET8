@@ -637,7 +637,7 @@ namespace Server.Mobiles
                 bool result = true;
                 result = result && this.Alive == false;                 // we're not alive now
                 result = result && m_SightExpire != DateTime.MaxValue;  // the timer hasn't been reset
-                result = result && DateTime.Now >= m_SightExpire;       // this call is a result of the last sightexpire time
+                result = result && DateTime.UtcNow >= m_SightExpire;       // this call is a result of the last sightexpire time
                 bool shouldGoBlind = result;                            // record if we shouldGoBlind
                 bool GhostSight = RegionAllowsSight();                  // does this region allow sight for ghosts
                 result = result && GhostSight == false;                 // rule result
@@ -690,7 +690,7 @@ namespace Server.Mobiles
             public int Count
             {
                 get { return m_Count; }
-                set { m_Count = value; m_Stamp = DateTime.Now; }
+                set { m_Count = value; m_Stamp = DateTime.UtcNow; }
             }
         }
         #endregion CountAndTimeStamp
@@ -772,7 +772,7 @@ namespace Server.Mobiles
             public SpeechRecordEntry(string text)
             {
                 Speech = text;
-                Time = DateTime.Now;
+                Time = DateTime.UtcNow;
             }
         }
 
@@ -802,7 +802,7 @@ namespace Server.Mobiles
         {
             InvalidateMyRunUO();
 
-            m_LastGuildChange = DateTime.Now;
+            m_LastGuildChange = DateTime.UtcNow;
             Guilds.Guild og = oldGuild as Guilds.Guild;
             if (og != null)
             {
@@ -828,7 +828,7 @@ namespace Server.Mobiles
             private DateTime m_killed;
             public Serial Serial { get { return m_serial; } }
             public DateTime Killed { get { return m_killed; } }
-            public bool Expired { get { return m_killed + TimeSpan.FromDays(5) < DateTime.Now; } }  // 5 day decay per kill
+            public bool Expired { get { return m_killed + TimeSpan.FromDays(5) < DateTime.UtcNow; } }  // 5 day decay per kill
             public EthicKillsLog(Serial serial, DateTime killed)
             {
                 m_serial = serial;
@@ -859,7 +859,7 @@ namespace Server.Mobiles
                 EthicKillsLogList.Clear();
                 for (int ix = EthicPoints; ix < value; ix++)
                 {   // phony up some kills for test purposes
-                    EthicKillsLogList.Add(new EthicKillsLog(Serial.MinusOne, DateTime.Now));
+                    EthicKillsLogList.Add(new EthicKillsLog(Serial.MinusOne, DateTime.UtcNow));
                 }
             }
         }
@@ -980,14 +980,14 @@ namespace Server.Mobiles
 
         public void OnKinAggression()
         {
-            KinAggressionTime = DateTime.Now + TimeSpan.FromMinutes(5.0/*Engines.IOBSystem.KinSystemSettings.KinAggressionMinutes*/);
+            KinAggressionTime = DateTime.UtcNow + TimeSpan.FromMinutes(5.0/*Engines.IOBSystem.KinSystemSettings.KinAggressionMinutes*/);
         }
 
         public void OnKinBeneficial()
         {
             //if (Engines.IOBSystem.KinSystemSettings.KinNameHueEnabled)
             {
-                if (KinBeneficialTime < DateTime.Now)
+                if (KinBeneficialTime < DateTime.UtcNow)
                 {
                     //If we're currently NOT outcast due to healing:
                     this.SendMessage("You have done a beneficial action on a kin, you are now participating in the kin system.");
@@ -999,7 +999,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                KinBeneficialTime = DateTime.Now + TimeSpan.FromMinutes(1440.0);    //default: one day (24 * 60)
+                KinBeneficialTime = DateTime.UtcNow + TimeSpan.FromMinutes(1440.0);    //default: one day (24 * 60)
             }
         }
 
@@ -1008,11 +1008,11 @@ namespace Server.Mobiles
         {
             get
             {
-                if (KinAggressionTime > DateTime.Now)
+                if (KinAggressionTime > DateTime.UtcNow)
                 {
                     return IOBAlignment.OutCast;
                 }
-                if (KinBeneficialTime > DateTime.Now)
+                if (KinBeneficialTime > DateTime.UtcNow)
                 {
                     return IOBAlignment.Healer;
                 }
@@ -1037,7 +1037,7 @@ namespace Server.Mobiles
                 }
                 if (this.m_LastGuildIOBAlignment != IOBAlignment.None)
                 {
-                    if (this.m_LastGuildChange + TimeSpan.FromDays(7.0) > DateTime.Now)
+                    if (this.m_LastGuildChange + TimeSpan.FromDays(7.0) > DateTime.UtcNow)
                     {
                         return this.m_LastGuildIOBAlignment;
                     }
@@ -1068,7 +1068,7 @@ namespace Server.Mobiles
                     else
                     {
                         if (this.m_LastGuildIOBAlignment != IOBAlignment.None
-                            && this.m_LastGuildChange.AddDays(7.0) > DateTime.Now)
+                            && this.m_LastGuildChange.AddDays(7.0) > DateTime.UtcNow)
                         {
                             return true;
                         }
@@ -1113,7 +1113,7 @@ namespace Server.Mobiles
             {
                 if (IOBEquipped && m_IOBStartedWearing > DateTime.MinValue)
                 {
-                    return (m_IOBRankTime + (DateTime.Now - m_IOBStartedWearing));
+                    return (m_IOBRankTime + (DateTime.UtcNow - m_IOBStartedWearing));
                 }
                 return m_IOBRankTime;
             }
@@ -1130,7 +1130,7 @@ namespace Server.Mobiles
                     TimeSpan totalRankTime = m_IOBRankTime; //this is to keep track of "running rank time" - basically ranktime + time logged-in and wearing
                     if (this.m_IOBStartedWearing > DateTime.MinValue)
                     {
-                        totalRankTime += (DateTime.Now - m_IOBStartedWearing);
+                        totalRankTime += (DateTime.UtcNow - m_IOBStartedWearing);
                     }
 
                     if (totalRankTime > TimeSpan.FromHours(72.0))
@@ -1157,7 +1157,7 @@ namespace Server.Mobiles
         {
             m_IOBRankTime = TimeSpan.FromHours(0.0);
             if (IOBEquipped)
-                m_IOBStartedWearing = DateTime.Now;
+                m_IOBStartedWearing = DateTime.UtcNow;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1170,13 +1170,13 @@ namespace Server.Mobiles
                 {
                     if (m_IOBStartedWearing > DateTime.MinValue) //make sure it's a valid value
                     {
-                        m_IOBRankTime += (DateTime.Now - m_IOBStartedWearing);
+                        m_IOBRankTime += (DateTime.UtcNow - m_IOBStartedWearing);
                         m_IOBStartedWearing = DateTime.MinValue;
                     }
                 }
                 else if (value == true && m_IOBEquipped == false) //if we're going from false->true
                 {
-                    m_IOBStartedWearing = DateTime.Now;
+                    m_IOBStartedWearing = DateTime.UtcNow;
                 }
 
                 m_IOBEquipped = value;
@@ -1289,14 +1289,14 @@ namespace Server.Mobiles
                 // Decrement SpiritCohesion according to LastResurrectTime
                 if (SpiritCohesion > 0)
                 {
-                    SpiritCohesion -= (int)((DateTime.Now - LastResurrectTime).TotalSeconds / CoreAI.CohesionLowerDelay);
+                    SpiritCohesion -= (int)((DateTime.UtcNow - LastResurrectTime).TotalSeconds / CoreAI.CohesionLowerDelay);
                     if (SpiritCohesion < 0)
                     {
                         SpiritCohesion = 0;
                     }
                 }
 
-                TimeSpan TimeSinceDeath = (DateTime.Now - LastDeathTime);
+                TimeSpan TimeSinceDeath = (DateTime.UtcNow - LastDeathTime);
                 TimeSpan CohesionTime = TimeSpan.FromSeconds(CoreAI.CohesionBaseDelay + (SpiritCohesion * CoreAI.CohesionFactor));
 
                 if (TimeSinceDeath < CohesionTime)
@@ -1427,7 +1427,7 @@ namespace Server.Mobiles
             // set membership
             m_NpcGuildPoints = 0;
             NpcGuild = newGuild;
-            NpcGuildJoinTime = DateTime.Now;
+            NpcGuildJoinTime = DateTime.UtcNow;
             NpcGuildGameTime = GameTime;
         }
         // called by the NPC guild master when a player resigns
@@ -1602,7 +1602,7 @@ namespace Server.Mobiles
                 {
                     //if we're using offline shortterm decay, return the min of online and offline decay
                     TimeSpan onlineDecay = m_ShortTermElapse - GameTime;
-                    TimeSpan offlineDecay = (this.m_LastShortDecayed.AddHours(CoreAI.OfflineShortsDecayHours) - DateTime.Now);
+                    TimeSpan offlineDecay = (this.m_LastShortDecayed.AddHours(CoreAI.OfflineShortsDecayHours) - DateTime.UtcNow);
 
                     if (onlineDecay < offlineDecay)
                     {
@@ -1867,7 +1867,7 @@ namespace Server.Mobiles
                     //Console.WriteLine("{1} has been offline since {0}.", pm.LastDisconnect, pm);
                     if (pm.AccessLevel == AccessLevel.Player && pm.Region != null && pm.Region.IsAngelIslandRules)
                     {
-                        TimeSpan ts = DateTime.Now - pm.LastDisconnect;
+                        TimeSpan ts = DateTime.UtcNow - pm.LastDisconnect;
                         if (ts.TotalHours >= 3)
                         {
                             int starting_count = pm.Backpack.FindAllItems().Count;
@@ -1900,7 +1900,7 @@ namespace Server.Mobiles
                 {
                     if (pm.AccessLevel == AccessLevel.Player)
                     {
-                        TimeSpan ts = DateTime.Now - pm.LastDisconnect;
+                        TimeSpan ts = DateTime.UtcNow - pm.LastDisconnect;
                         if (ts >= Region.DefaultLogoutDelay + TimeSpan.FromSeconds(20.0))
                         {
                             pm.Hidden = true;
@@ -1919,8 +1919,8 @@ namespace Server.Mobiles
             #region InmateLastDeathTime & LastResynchTime
             if (pm != null)
             {
-                pm.m_LastResynchTime = DateTime.Now;
-                pm.m_InmateLastDeathTime = DateTime.Now; //have to set this to now, otherwise it'd be exploitable.
+                pm.m_LastResynchTime = DateTime.UtcNow;
+                pm.m_InmateLastDeathTime = DateTime.UtcNow; //have to set this to now, otherwise it'd be exploitable.
             }
             #endregion
 
@@ -1957,7 +1957,7 @@ namespace Server.Mobiles
             //Tell staff that a watchlist player has logged in
             if (pm != null && pm.WatchList)
             {
-                if (pm.WatchExpire > DateTime.Now)
+                if (pm.WatchExpire > DateTime.UtcNow)
                 {
                     Server.Commands.CommandHandlers.BroadcastMessage(AccessLevel.Counselor,
                         0x482,
@@ -1972,7 +1972,7 @@ namespace Server.Mobiles
 
             if (acct != null && acct.Watched)
             {
-                if (acct.WatchExpire > DateTime.Now)
+                if (acct.WatchExpire > DateTime.UtcNow)
                 {
                     Server.Commands.CommandHandlers.BroadcastMessage(AccessLevel.Counselor,
                         0x482,
@@ -2278,13 +2278,13 @@ namespace Server.Mobiles
 
             if (pm != null)
             {
-                pm.m_SessionStart = DateTime.Now;
+                pm.m_SessionStart = DateTime.UtcNow;
 
                 if (pm.m_Quest != null)
                     pm.m_Quest.StartTimer();
 
                 if (pm.IOBEquipped)
-                    pm.m_IOBStartedWearing = DateTime.Now;
+                    pm.m_IOBStartedWearing = DateTime.UtcNow;
 
                 pm.BedrollLogout = false;
             }
@@ -2315,7 +2315,7 @@ namespace Server.Mobiles
 
             if (pm != null)
             {
-                pm.m_GameTime += (DateTime.Now - pm.m_SessionStart);
+                pm.m_GameTime += (DateTime.UtcNow - pm.m_SessionStart);
 
                 if (pm.m_Quest != null)
                     pm.m_Quest.StopTimer();
@@ -2325,13 +2325,13 @@ namespace Server.Mobiles
                 {
                     if (pm.m_IOBStartedWearing > DateTime.MinValue)
                     {
-                        pm.m_IOBRankTime += (DateTime.Now - pm.m_IOBStartedWearing);
+                        pm.m_IOBRankTime += (DateTime.UtcNow - pm.m_IOBStartedWearing);
                     }
                 }
                 pm.m_IOBStartedWearing = DateTime.MinValue; //always set this to minvalue when logged out
 
                 // record when this player went off line 
-                pm.LastDisconnect = DateTime.Now;
+                pm.LastDisconnect = DateTime.UtcNow;
             }
 
             // wea: log the fact that they've disconnected
@@ -3174,7 +3174,7 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        deadtime = DateTime.Now - m_InmateLastDeathTime;
+                        deadtime = DateTime.UtcNow - m_InmateLastDeathTime;
                     }
 
                     //reduce short term by 4 hours minus half the time spent dead (modulo 8 hours)
@@ -3232,7 +3232,7 @@ namespace Server.Mobiles
         public override void OnAfterResurrect()
         {
             // Set last res time so we know how long they've had alive
-            LastResurrectTime = DateTime.Now;
+            LastResurrectTime = DateTime.UtcNow;
 
             if (LastDeathTime == null)
             {
@@ -3240,7 +3240,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            TimeSpan TimeSinceDeath = (DateTime.Now - LastDeathTime);
+            TimeSpan TimeSinceDeath = (DateTime.UtcNow - LastDeathTime);
 
             if (TimeSinceDeath < TimeSpan.FromSeconds(CoreAI.CohesionLowerDelay))
             {
@@ -3276,7 +3276,7 @@ namespace Server.Mobiles
 #endif
             if (Inmate)
             {
-                m_InmateLastDeathTime = DateTime.Now;
+                m_InmateLastDeathTime = DateTime.UtcNow;
 
                 // If they die as an Inmate, reset their kill timers to 8/40
                 m_ShortTermElapse += TimeSpan.FromHours(4);
@@ -3570,9 +3570,9 @@ namespace Server.Mobiles
             //Engines.IOBSystem.KinSystem.OnDeath(this);
 
             // ghosts now go blind after their body decays
-            m_SightExpire = DateTime.Now + CorpseDecayTime();
+            m_SightExpire = DateTime.UtcNow + CorpseDecayTime();
             m_SightExpire += BoneDecayTime();
-            Timer.DelayCall(m_SightExpire - DateTime.Now, new TimerCallback(GoBlind));
+            Timer.DelayCall(m_SightExpire - DateTime.UtcNow, new TimerCallback(GoBlind));
 
             HueMod = -1;
             NameMod = null;
@@ -3602,7 +3602,7 @@ namespace Server.Mobiles
 
             #region Justice
 #if THIS_IS_NOT_USED
-			if ( this.Kills >= 5 && false /*DateTime.Now >= m_NextJustAward*/ )
+			if ( this.Kills >= 5 && false /*DateTime.UtcNow >= m_NextJustAward*/ )
 			{
 				Mobile m = FindMostRecentDamager( false );
 
@@ -3630,7 +3630,7 @@ namespace Server.Mobiles
 					 *						m.FixedParticles( 0x375A, 9, 20, 5027, EffectLayer.Waist );
 					 *						m.PlaySound( 0x1F7 );
 					 *
-					 *						m_NextJustAward = DateTime.Now + TimeSpan.FromMinutes( pointsToGain * 2 );
+					 *						m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes( pointsToGain * 2 );
 					 *					}
 					 */
 					this.Aggressors.Clear();
@@ -3700,7 +3700,7 @@ namespace Server.Mobiles
             // todo
             // Server.Guilds.Guild.HandleDeath(this, killer);
 
-            this.LastDeathTime = DateTime.Now;
+            this.LastDeathTime = DateTime.UtcNow;
             this.ClearDamageEntries();
         }
 
@@ -3814,7 +3814,7 @@ namespace Server.Mobiles
                         {
                             for (int i = pm.KillerTimes.Count - 1; i >= 0; i--)
                             {
-                                if (DateTime.Now - ((ReportMurdererGump.KillerTime)pm.KillerTimes[i]).Time > TimeSpan.FromMinutes(5.0))
+                                if (DateTime.UtcNow - ((ReportMurdererGump.KillerTime)pm.KillerTimes[i]).Time > TimeSpan.FromMinutes(5.0))
                                 {
                                     pm.KillerTimes.RemoveAt(i);
                                 }
@@ -3835,9 +3835,9 @@ namespace Server.Mobiles
 
         public void DecayKills()
         {
-            if (m_ShortTermElapse < this.GameTime || ((CoreAI.OfflineShortsDecay != 0) && ((DateTime.Now - m_LastShortDecayed) > TimeSpan.FromHours(CoreAI.OfflineShortsDecayHours))))
+            if (m_ShortTermElapse < this.GameTime || ((CoreAI.OfflineShortsDecay != 0) && ((DateTime.UtcNow - m_LastShortDecayed) > TimeSpan.FromHours(CoreAI.OfflineShortsDecayHours))))
             {
-                m_LastShortDecayed = DateTime.Now;
+                m_LastShortDecayed = DateTime.UtcNow;
 
                 if ((Core.UOAI || Core.UOAR) && Inmate && Alive)
                 {
@@ -3882,7 +3882,7 @@ namespace Server.Mobiles
         {
             get
             {
-                TimeSpan ts = m_SavagePaintExpiration - DateTime.Now;
+                TimeSpan ts = m_SavagePaintExpiration - DateTime.UtcNow;
 
                 if (ts < TimeSpan.Zero)
                     ts = TimeSpan.Zero;
@@ -3891,7 +3891,7 @@ namespace Server.Mobiles
             }
             set
             {
-                m_SavagePaintExpiration = DateTime.Now + value;
+                m_SavagePaintExpiration = DateTime.UtcNow + value;
             }
         }
 
@@ -3900,7 +3900,7 @@ namespace Server.Mobiles
         {
             get
             {
-                TimeSpan ts = m_NextSmithBulkOrder - DateTime.Now;
+                TimeSpan ts = m_NextSmithBulkOrder - DateTime.UtcNow;
 
                 if (ts < TimeSpan.Zero)
                     ts = TimeSpan.Zero;
@@ -3909,7 +3909,7 @@ namespace Server.Mobiles
             }
             set
             {
-                try { m_NextSmithBulkOrder = DateTime.Now + value; }
+                try { m_NextSmithBulkOrder = DateTime.UtcNow + value; }
                 catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
             }
         }
@@ -3919,7 +3919,7 @@ namespace Server.Mobiles
         {
             get
             {
-                TimeSpan ts = m_NextTailorBulkOrder - DateTime.Now;
+                TimeSpan ts = m_NextTailorBulkOrder - DateTime.UtcNow;
 
                 if (ts < TimeSpan.Zero)
                     ts = TimeSpan.Zero;
@@ -3928,7 +3928,7 @@ namespace Server.Mobiles
             }
             set
             {
-                try { m_NextTailorBulkOrder = DateTime.Now + value; }
+                try { m_NextTailorBulkOrder = DateTime.UtcNow + value; }
                 catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
             }
         }
@@ -3998,9 +3998,9 @@ namespace Server.Mobiles
             if (!(speaker is PlayerMobile))
                 return;
 
-            string msg = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + speaker.Name + " " + "(acct " + ((Account)speaker.Account).Username + ") " + (note != null ? "(" + note + ") " : "") + ": " + text;
+            string msg = "[" + DateTime.UtcNow.ToString("HH:mm:ss") + "] " + speaker.Name + " " + "(acct " + ((Account)speaker.Account).Username + ") " + (note != null ? "(" + note + ") " : "") + ": " + text;
             m_SpeechRecord.Enqueue(new SpeechRecordEntry(msg));
-            while (((SpeechRecordEntry)m_SpeechRecord.Peek()).Time < DateTime.Now - TimeSpan.FromMinutes(5.0))
+            while (((SpeechRecordEntry)m_SpeechRecord.Peek()).Time < DateTime.UtcNow - TimeSpan.FromMinutes(5.0))
                 m_SpeechRecord.Dequeue();
 
             if (m_ReportLogger != null)
@@ -4019,12 +4019,12 @@ namespace Server.Mobiles
                     m_ReportLogStopper.Stop();
             }
 
-            m_Reported = DateTime.Now;
+            m_Reported = DateTime.UtcNow;
             m_ReportLogger = new LogHelper(GetReportLogName(m_Reported.ToString("MM-dd-yyyy HH-mm-ss")));
             m_ReportLogger.Log(LogType.Text, String.Format("{0} (acct {1}, SN {2}, IP {3}) reported by {4} (acct {5}, SN {6}) at {7}, at {8}.\r\n\r\n",
-                this.Name, ((Account)this.Account).Username, this.Serial, ((this.NetState != null) ? this.NetState.ToString() : ""), from.Name, ((Account)from.Account).Username, from.Serial, DateTime.Now, from.Location));
+                this.Name, ((Account)this.Account).Username, this.Serial, ((this.NetState != null) ? this.NetState.ToString() : ""), from.Name, ((Account)from.Account).Username, from.Serial, DateTime.UtcNow, from.Location));
             //Console.WriteLine("{0} (acct {1}, SN {2}, IP {3}) reported by {4} (acct {5}, SN {6}) at {7}, at {8}.\r\n\r\n",
-            //    this.Name, ((Account)this.Account).Username, this.Serial, this.NetState.ToString(), from.Name, ((Account)from.Account).Username, from.Serial, DateTime.Now, from.Location);
+            //    this.Name, ((Account)this.Account).Username, this.Serial, this.NetState.ToString(), from.Name, ((Account)from.Account).Username, from.Serial, DateTime.UtcNow, from.Location);
 
             while (m_SpeechRecord.Count > 0)
                 m_ReportLogger.Log(LogType.Text, ((SpeechRecordEntry)m_SpeechRecord.Dequeue()).Speech);
@@ -4302,7 +4302,7 @@ namespace Server.Mobiles
             CountAndTimeStamp count = (CountAndTimeStamp)tbl[obj];
             if (count != null)
             {
-                if (count.TimeStamp + AntiMacroExpire <= DateTime.Now)
+                if (count.TimeStamp + AntiMacroExpire <= DateTime.UtcNow)
                 {
                     count.Count = 1;
                     return true;
@@ -4446,10 +4446,10 @@ namespace Server.Mobiles
                         m_SightExpire = reader.ReadDateTime();
                         if (m_SightExpire != DateTime.MaxValue)
                         {
-                            if (m_SightExpire <= DateTime.Now)
+                            if (m_SightExpire <= DateTime.UtcNow)
                                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(GoBlind));
                             else
-                                Timer.DelayCall(m_SightExpire - DateTime.Now, new TimerCallback(GoBlind));
+                                Timer.DelayCall(m_SightExpire - DateTime.UtcNow, new TimerCallback(GoBlind));
                         }
 
                         goto case 25;
@@ -4477,10 +4477,10 @@ namespace Server.Mobiles
                 case 22:
                     {
                         m_Reported = reader.ReadDateTime();
-                        if (m_Reported > DateTime.Now - ReportTime)
+                        if (m_Reported > DateTime.UtcNow - ReportTime)
                         {
                             m_ReportLogger = new LogHelper(GetReportLogName(m_Reported.ToString("MM-dd-yyyy HH-mm-ss")), false);
-                            m_ReportLogStopper = Timer.DelayCall(ReportTime - (DateTime.Now - m_Reported), new TimerCallback(EndReport));
+                            m_ReportLogStopper = Timer.DelayCall(ReportTime - (DateTime.UtcNow - m_Reported), new TimerCallback(EndReport));
                         }
                         goto case 21;
                     }
@@ -4708,7 +4708,7 @@ namespace Server.Mobiles
                 ArrayList remove = new ArrayList();
                 foreach (CountAndTimeStamp time in t.Values)
                 {
-                    if (time.TimeStamp + AntiMacroExpire <= DateTime.Now)
+                    if (time.TimeStamp + AntiMacroExpire <= DateTime.UtcNow)
                         remove.Add(time);
                 }
 
@@ -4799,7 +4799,7 @@ namespace Server.Mobiles
             TimeSpan ranktime = m_IOBRankTime;
             if (IOBEquipped && m_IOBStartedWearing > DateTime.MinValue)
             {
-                ranktime += (DateTime.Now - m_IOBStartedWearing);
+                ranktime += (DateTime.UtcNow - m_IOBStartedWearing);
             }
             writer.Write(ranktime);
 
@@ -4895,7 +4895,7 @@ namespace Server.Mobiles
             }
 
             //also reset last short decay (for offline decay)
-            m_LastShortDecayed = DateTime.Now;
+            m_LastShortDecayed = DateTime.UtcNow;
         }
 
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Owner)]
@@ -4904,7 +4904,7 @@ namespace Server.Mobiles
             get
             {
                 if (NetState != null)
-                    return m_GameTime + (DateTime.Now - m_SessionStart);
+                    return m_GameTime + (DateTime.UtcNow - m_SessionStart);
                 else
                     return m_GameTime;
             }
@@ -5277,16 +5277,16 @@ namespace Server.Mobiles
 			if (pm.m_NextMovementTime == DateTime.MinValue)
 			{
 				// has not yet moved
-				pm.m_NextMovementTime = DateTime.Now;
+				pm.m_NextMovementTime = DateTime.UtcNow;
 				return true;
 			}
 
-			TimeSpan ts = pm.m_NextMovementTime - DateTime.Now;
+			TimeSpan ts = pm.m_NextMovementTime - DateTime.UtcNow;
 
 			if (ts < TimeSpan.Zero)
 			{
 				// been a while since we've last moved
-				pm.m_NextMovementTime = DateTime.Now;
+				pm.m_NextMovementTime = DateTime.UtcNow;
 				return true;
 			}
 
@@ -5346,17 +5346,17 @@ namespace Server.Mobiles
             if (pm.m_NextMovementTime == DateTime.MinValue)
             {
                 // has not yet moved
-                pm.m_NextMovementTime = DateTime.Now;
+                pm.m_NextMovementTime = DateTime.UtcNow;
 
                 return true;
             }
 
-            TimeSpan ts = pm.m_NextMovementTime - DateTime.Now;
+            TimeSpan ts = pm.m_NextMovementTime - DateTime.UtcNow;
 
             if (ts < TimeSpan.Zero)
             {
                 // been a while since we've last moved
-                pm.m_NextMovementTime = DateTime.Now;
+                pm.m_NextMovementTime = DateTime.UtcNow;
 
                 return true;
             }
@@ -5600,10 +5600,10 @@ namespace Server.Mobiles
         {
             if (Core.UOSP)
             {
-                if ((LastStatGain + TimeSpan.FromMinutes(15.0)) >= DateTime.Now)
+                if ((LastStatGain + TimeSpan.FromMinutes(15.0)) >= DateTime.UtcNow)
                     return;
 
-                LastStatGain = DateTime.Now;
+                LastStatGain = DateTime.UtcNow;
                 m_rotstatgaintoday++;
                 IncreaseStat(stat, false);
             }
@@ -5722,7 +5722,7 @@ namespace Server.Mobiles
                 return false;
 
             LastSkillUsed = skill.SkillName;
-            LastSkillTime = DateTime.Now;
+            LastSkillTime = DateTime.UtcNow;
 
             return base.CheckSkill(skill, amObj, chance);
         }
@@ -5734,13 +5734,13 @@ namespace Server.Mobiles
         {
             get
             {
-                if (m_RoTSkillGainResetTime < DateTime.Now || m_RoTSkillGainResetTime == DateTime.MinValue)
+                if (m_RoTSkillGainResetTime < DateTime.UtcNow || m_RoTSkillGainResetTime == DateTime.MinValue)
                 {
                     //reset values
                     m_rotskillgaintoday = 0;
                     m_rotstatgaintoday = 0;
 
-                    m_RoTSkillGainResetTime = DateTime.Now.AddDays(1.0);
+                    m_RoTSkillGainResetTime = DateTime.UtcNow.AddDays(1.0);
                 }
 
                 return m_rotskillgaintoday;
@@ -5859,7 +5859,7 @@ namespace Server.Mobiles
                     }
                     //make sure we're passed the allotted time
                     DateTime lastgain = LastSkillGainTime[skill.SkillID];
-                    if ((lastgain + timebetween) > DateTime.Now)
+                    if ((lastgain + timebetween) > DateTime.UtcNow)
                     {
                         if (m_RoTDebug)
                         {
@@ -5870,7 +5870,7 @@ namespace Server.Mobiles
                     //we've already checked (in Mobile.CheckSkill) that we are working on something that
                     // isn't too easy or too hard, so gain it.
                     RotSkillGainToday += gainpercentadded;
-                    LastSkillGainTime[skill.SkillID] = DateTime.Now;
+                    LastSkillGainTime[skill.SkillID] = DateTime.UtcNow;
                     return true;
                 }
             }
@@ -5893,7 +5893,7 @@ namespace Server.Mobiles
                 else //skill is <= 80.0, ignore it
                     minTimeBetweenGains = TimeSpan.FromSeconds(0.1);
 
-                if (minTimeBetweenGains > (DateTime.Now - lastgain))
+                if (minTimeBetweenGains > (DateTime.UtcNow - lastgain))
                     return false;
 
                 // in jail?
@@ -5903,7 +5903,7 @@ namespace Server.Mobiles
                 // check base here because we need to know it returns true to be able to set LastSkillGainTime
                 if (!base.AllowGain(skill, obj))
                     return false;
-                LastSkillGainTime[skill.SkillID] = DateTime.Now;
+                LastSkillGainTime[skill.SkillID] = DateTime.UtcNow;
                 return true;
             }
         }
@@ -5981,7 +5981,7 @@ namespace Server.Mobiles
 
             if (passed)
             {
-                m_RTTNextTest = DateTime.Now.AddMinutes(m_MinutesUntilNextTest);
+                m_RTTNextTest = DateTime.UtcNow.AddMinutes(m_MinutesUntilNextTest);
             }
         }
         public bool RTT(string notification)
@@ -5998,11 +5998,11 @@ namespace Server.Mobiles
 
             if (m_RTTNextTest == DateTime.MinValue)
             {
-                m_RTTNextTest = DateTime.Now.AddMinutes(5.0);
+                m_RTTNextTest = DateTime.UtcNow.AddMinutes(5.0);
             }
-            else if (DateTime.Now > m_RTTNextTest)
+            else if (DateTime.UtcNow > m_RTTNextTest)
             {
-                m_RTTNextTest = DateTime.Now.AddMinutes(5.0);
+                m_RTTNextTest = DateTime.UtcNow.AddMinutes(5.0);
                 bDoTest = true;
             }
 
@@ -6027,7 +6027,7 @@ namespace Server.Mobiles
             if (bForced)
             {
                 bDoTest = true;
-                m_RTTNextTest = DateTime.Now.AddMinutes(m_MinutesUntilNextTest);
+                m_RTTNextTest = DateTime.UtcNow.AddMinutes(m_MinutesUntilNextTest);
             }
 
             if (bDoTest)
@@ -6068,7 +6068,7 @@ namespace Server.Mobiles
         {
             m_Capturing = true;
             m_Table = new Dictionary<PlayerMobile, MemoryStream>();
-            m_Started = DateTime.Now;
+            m_Started = DateTime.UtcNow;
             m_Count = 0;
 
             Packet p = new AsciiMessage(Serial.MinusOne, -1, MessageType.Regular, 0, 3, "System", "Beginning MovementReq capture. Halting after 30 minutes or 1,000,000 hits.");
@@ -6128,7 +6128,7 @@ namespace Server.Mobiles
         public static void MRCaptureStatus(CommandEventArgs e)
         {
             if (m_Capturing)
-                e.Mobile.SendMessage("MR Capture has been running for {0} minutes, with {1} hits.", (DateTime.Now - m_Started).Minutes, m_Count);
+                e.Mobile.SendMessage("MR Capture has been running for {0} minutes, with {1} hits.", (DateTime.UtcNow - m_Started).Minutes, m_Count);
             else
                 e.Mobile.SendMessage("MR Capture not running.");
         }
@@ -6138,7 +6138,7 @@ namespace Server.Mobiles
             if (!m_Capturing)
                 return;
 
-            if (m_Started + TimeSpan.FromMinutes(30.0) <= DateTime.Now)
+            if (m_Started + TimeSpan.FromMinutes(30.0) <= DateTime.UtcNow)
             {
                 StopMRCapture(null);
                 return;
@@ -6147,7 +6147,7 @@ namespace Server.Mobiles
             if (!m_Table.ContainsKey(pm))
                 m_Table.Add(pm, new MemoryStream());
 
-            m_Table[pm].Write(BitConverter.GetBytes(DateTime.Now.ToBinary()), 0, 8);
+            m_Table[pm].Write(BitConverter.GetBytes(DateTime.UtcNow.ToBinary()), 0, 8);
             m_Count++;
         }
     }

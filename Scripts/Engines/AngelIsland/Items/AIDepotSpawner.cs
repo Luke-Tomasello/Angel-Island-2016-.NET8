@@ -130,7 +130,7 @@ namespace Server.Items
             get
             {
                 if (m_Running)
-                    return m_End - DateTime.Now;
+                    return m_End - DateTime.UtcNow;
                 else
                     return TimeSpan.FromSeconds(0);
             }
@@ -230,7 +230,7 @@ namespace Server.Items
             writer.Write(m_ReagentContainer);
             writer.Write(m_Running);
             if (m_Running)
-                writer.Write(m_End - DateTime.Now);
+                writer.Write(m_End - DateTime.UtcNow);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -272,7 +272,7 @@ namespace Server.Items
             if (!m_Running)
                 return;
 
-            m_End = DateTime.Now + delay;
+            m_End = DateTime.UtcNow + delay;
 
             if (m_Timer != null)
                 m_Timer.Stop();

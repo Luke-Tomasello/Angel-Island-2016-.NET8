@@ -35,7 +35,7 @@
  *	9/8/08, Adam
  *		Change Server Wars message from "Head to Dungeon Wrong for PvP." to "Head to West Britain Bank for PvP."
  *	4/14/08, Adam
- *		Replace all explicit use of AdjustedDateTime(DateTime.Now).Value with the new:
+ *		Replace all explicit use of AdjustedDateTime(DateTime.UtcNow).Value with the new:
  *			public static DateTime Cron.GameTimeNow
  *		We do this so that it is clear what files need to opperate in this special time mode:
  *			CronScheduler.cs, AutoRestart.cs, AutomatedEventSystem.cs
@@ -123,7 +123,7 @@ namespace Server
     public class AutomatedEventSystem : Item
     {
         private TownCrierEntry m_TownCrierMessage;  // town crier entry for telling the world about us
-        private DateTime m_ActionTime = Cron.GameTimeNow - TimeSpan.FromMinutes(1.0);
+        private DateTime m_ActionTime = AdjustedDateTime.GameTime - TimeSpan.FromMinutes(1.0);
         private Timer m_ActionTimer = null;
         private bool m_reset = true;                // not serialized - server restarted(true)
         private bool m_valid = true;                // not serialized - server restarted leaving the object in a bad state
@@ -225,7 +225,7 @@ namespace Server
         [CommandProperty(AccessLevel.Administrator)]
         public bool EventStarted
         {
-            get { return Cron.GameTimeNow >= m_EventStartTime; }
+            get { return AdjustedDateTime.GameTime >= m_EventStartTime; }
         }
         [CommandProperty(AccessLevel.Administrator)]
         public bool EventStartInit
@@ -235,7 +235,7 @@ namespace Server
         [CommandProperty(AccessLevel.Administrator)]
         public bool EventEnded
         {
-            get { return Cron.GameTimeNow >= m_EventEndTime; }
+            get { return AdjustedDateTime.GameTime >= m_EventEndTime; }
         }
         [CommandProperty(AccessLevel.Administrator)]
         public bool EventEndInit
@@ -277,21 +277,21 @@ namespace Server
             }
 
             // periodic announcement
-            if (Cron.GameTimeNow - m_AnnounceTime >= m_AnnounceDelta && ValidState)
+            if (AdjustedDateTime.GameTime - m_AnnounceTime >= m_AnnounceDelta && ValidState)
             {
                 OnAnnounce();
-                m_AnnounceTime = Cron.GameTimeNow;
+                m_AnnounceTime = AdjustedDateTime.GameTime;
             }
 
             // one time system broadcast message
-            if (Cron.GameTimeNow > BroadcastTime && ValidState)
+            if (AdjustedDateTime.GameTime > BroadcastTime && ValidState)
             {
                 OnBroadcast();
                 BroadcastTime = DateTime.MaxValue;
             }
 
             // final cleanup
-            if (Cron.GameTimeNow > FinalCleanup && ValidState)
+            if (AdjustedDateTime.GameTime > FinalCleanup && ValidState)
             {
                 OnFinalCleanup();
                 FinalCleanup = DateTime.MaxValue;
@@ -331,7 +331,7 @@ namespace Server
             Console.WriteLine("CoreAES: BroadcastTime: {0}", m_BroadcastTime);
 
             // count down to next announcement
-            TimeSpan delta = Cron.GameTimeNow - m_AnnounceTime;
+            TimeSpan delta = AdjustedDateTime.GameTime - m_AnnounceTime;
             delta = m_AnnounceDelta - delta;
             Console.WriteLine("CoreAES: Next announcement: {0:F2} minute(s).", delta.TotalMinutes);
         }
@@ -366,9 +366,9 @@ namespace Server
             if (m_ActionTimer != null)
                 m_ActionTimer.Stop();
 
-            m_ActionTime = Cron.GameTimeNow + delay;
+            m_ActionTime = AdjustedDateTime.GameTime + delay;
 
-            m_ActionTimer = new ActionTimer(this, m_ActionTime - Cron.GameTimeNow);
+            m_ActionTimer = new ActionTimer(this, m_ActionTime - AdjustedDateTime.GameTime);
             m_ActionTimer.Start();
         }
 
@@ -411,7 +411,7 @@ namespace Server
                 case 1:
                     {
                         m_ActionTime = reader.ReadDateTime();
-                        m_ActionTimer = new ActionTimer(this, m_ActionTime - Cron.GameTimeNow);
+                        m_ActionTimer = new ActionTimer(this, m_ActionTime - AdjustedDateTime.GameTime);
                         m_ActionTimer.Start();
 
                         m_EventStartTime = reader.ReadDateTime();
@@ -441,11 +441,11 @@ namespace Server
 
         public CrazyMapDayAES()
         {
-            AnnounceTime = Cron.GameTimeNow;                        // when we make TC announcements
+            AnnounceTime = AdjustedDateTime.GameTime;                        // when we make TC announcements
 
             if (m_test == false)
             {
-                EventStartTime = Cron.GameTimeNow.AddDays(1.0);         // 24 hours from now
+                EventStartTime = AdjustedDateTime.GameTime.AddDays(1.0);         // 24 hours from now
                 EventEndTime = EventStartTime.AddHours(3.0);        // 3 hour event
                 AnnounceDelta = TimeSpan.FromHours(1.0);            //	each hour
                 BroadcastTime = EventStartTime.AddHours(-1.0);      // 1 hour before start - final Broadcast
@@ -453,7 +453,7 @@ namespace Server
             }
             else
             {
-                EventStartTime = Cron.GameTimeNow.AddMinutes(10.0);     // (TEST)
+                EventStartTime = AdjustedDateTime.GameTime.AddMinutes(10.0);     // (TEST)
                 EventEndTime = EventStartTime.AddMinutes(10.0);     // (TEST)
                 AnnounceDelta = TimeSpan.FromMinutes(2.0);      // (TEST)
                 BroadcastTime = EventStartTime.AddMinutes(-1.0);    // (TEST)
@@ -501,7 +501,7 @@ namespace Server
             // pre event announcements
             if (EventStarted == false)
             {
-                TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+                TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
                 bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
                 // what we want the Town Crier to say
@@ -516,7 +516,7 @@ namespace Server
                 lines[3] = String.Format("Beware; the murderous shall be among us.");
 
                 // use the smaller of the time spans
-                TimeSpan s1 = EventStartTime - Cron.GameTimeNow;
+                TimeSpan s1 = EventStartTime - AdjustedDateTime.GameTime;
                 TimeSpan s2 = TimeSpan.FromMinutes(20.0);
                 TimeSpan span = (s1 > s2) ? s2 : s1;
 
@@ -528,7 +528,7 @@ namespace Server
             else if (EventStarted == true && EventEnded == false)
             {
                 // remainder of event
-                TimeSpan span = EventEndTime - Cron.GameTimeNow;
+                TimeSpan span = EventEndTime - AdjustedDateTime.GameTime;
 
                 // Setup the Town Crier with a new message
                 string[] lines = new string[1];
@@ -553,7 +553,7 @@ namespace Server
         public override void OnBroadcast()
         {
             // issue a final event announcement
-            TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+            TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
             bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
             string[] lines = new string[1];
@@ -628,11 +628,11 @@ namespace Server
 
         public TownInvasionAES()
         {
-            AnnounceTime = Cron.GameTimeNow;                            // when we make TC announcements
+            AnnounceTime = AdjustedDateTime.GameTime;                            // when we make TC announcements
 
             if (m_test == false)
             {
-                EventStartTime = Cron.GameTimeNow.AddDays(1.0);         // 24 hours from now
+                EventStartTime = AdjustedDateTime.GameTime.AddDays(1.0);         // 24 hours from now
                 EventEndTime = EventStartTime.AddHours(8.0);        // 8 hour event
                 AnnounceDelta = TimeSpan.FromHours(1.0);            //	each hour
                 BroadcastTime = EventStartTime.AddHours(-1.0);      // 1 hour before start - final Broadcast
@@ -640,7 +640,7 @@ namespace Server
             }
             else
             {
-                EventStartTime = Cron.GameTimeNow.AddMinutes(3.0);      // (TEST)
+                EventStartTime = AdjustedDateTime.GameTime.AddMinutes(3.0);      // (TEST)
                 EventEndTime = EventStartTime.AddHours(1.0);        // (TEST)
                 AnnounceDelta = TimeSpan.FromMinutes(2.0);      // (TEST)
                 BroadcastTime = EventStartTime.AddMinutes(-2.0);    // (TEST)
@@ -766,7 +766,7 @@ namespace Server
             // pre event announcements
             if (EventStarted == false)
             {
-                TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+                TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
                 bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
                 // what we want the Town Crier to say
@@ -806,7 +806,7 @@ namespace Server
                 }
 
                 // use the smaller of the time spans
-                TimeSpan s1 = EventStartTime - Cron.GameTimeNow;
+                TimeSpan s1 = EventStartTime - AdjustedDateTime.GameTime;
                 TimeSpan s2 = TimeSpan.FromMinutes(20.0);
                 TimeSpan span = (s1 > s2) ? s2 : s1;
 
@@ -818,7 +818,7 @@ namespace Server
             else if (EventStarted == true && EventEnded == false)
             {
                 // remainder of event
-                TimeSpan span = EventEndTime - Cron.GameTimeNow;
+                TimeSpan span = EventEndTime - AdjustedDateTime.GameTime;
 
                 // Setup the Town Crier with a new message
                 string[] lines = new string[2];
@@ -868,7 +868,7 @@ namespace Server
         public override void OnBroadcast()
         {
             // issue a final event announcement
-            TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+            TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
             bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
             string line = String.Format(
@@ -904,7 +904,7 @@ namespace Server
                 m_ChampionSpawn.Active = false;
             }
 
-            EventEndTime = Cron.GameTimeNow.AddHours(1.0);  // let the guards remain off for another hour
+            EventEndTime = AdjustedDateTime.GameTime.AddHours(1.0);  // let the guards remain off for another hour
             FinalCleanup = EventEndTime.AddHours(1.0);  // cleanup this AES 1 hour after the event ends				
         }
 
@@ -993,29 +993,29 @@ namespace Server
 
         public KinRansomAES()
         {
-            AnnounceTime = Cron.GameTimeNow;                        // when we make TC announcements
-            EventStartTime = Cron.GameTimeNow;                      // for debug start 'now'
+            AnnounceTime = AdjustedDateTime.GameTime;                        // when we make TC announcements
+            EventStartTime = AdjustedDateTime.GameTime;                      // for debug start 'now'
 
             if (m_test == false)
             {
-                EventStartTime = Cron.GameTimeNow.AddDays(1.0);     // 24 hours from now
+                EventStartTime = AdjustedDateTime.GameTime.AddDays(1.0);     // 24 hours from now
                 EventEndTime = EventStartTime.AddHours(3.0);        // 3 hour event
                 AnnounceDelta = TimeSpan.FromHours(1.0);            //	each hour
                 BroadcastTime = EventStartTime.AddHours(-1.0);      // 1 hour before start - final Broadcast
                 FinalCleanup = EventEndTime.AddHours(1.0);          // cleanup this AES 1 hour after the event ends				
                 ChestOpenTime =                                     // at 1.5hrs + rand(60) open the chest
                     EventStartTime.AddMinutes(90 + Utility.Random(60));
-                PreEventTime = Cron.GameTimeNow;                    // pre event starts now						
+                PreEventTime = AdjustedDateTime.GameTime;                    // pre event starts now						
             }
             else
             {
-                EventStartTime = Cron.GameTimeNow.AddMinutes(10);   // (TEST)
+                EventStartTime = AdjustedDateTime.GameTime.AddMinutes(10);   // (TEST)
                 EventEndTime = EventStartTime.AddHours(1.0);        // (TEST)
                 AnnounceDelta = TimeSpan.FromMinutes(2.0);      // (TEST)
                 BroadcastTime = EventStartTime.AddMinutes(-2.0);    // (TEST)
                 FinalCleanup = EventEndTime.AddMinutes(1.0);        // (TEST)
                 ChestOpenTime = EventEndTime.AddMinutes(-2.0);      // (TEST)
-                PreEventTime = Cron.GameTimeNow;                    // (TEST)
+                PreEventTime = AdjustedDateTime.GameTime;                    // (TEST)
             }
 
             m_spawners = new ArrayList();
@@ -1028,7 +1028,7 @@ namespace Server
         }
         public bool ChestOpened
         {
-            get { return Cron.GameTimeNow >= m_ChestOpenTime; }
+            get { return AdjustedDateTime.GameTime >= m_ChestOpenTime; }
         }
         public bool ChestOpenInit
         {
@@ -1041,7 +1041,7 @@ namespace Server
         }
         public bool PreEvent
         {
-            get { return Cron.GameTimeNow >= m_PreEventTime; }
+            get { return AdjustedDateTime.GameTime >= m_PreEventTime; }
         }
         public bool PreEventInit
         {
@@ -1164,7 +1164,7 @@ namespace Server
             // pre event announcements
             if (EventStarted == false)
             {
-                TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+                TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
                 bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
                 // what we want the Town Crier to say
@@ -1190,7 +1190,7 @@ namespace Server
                 }
 
                 // use the smaller of the time spans
-                TimeSpan s1 = EventStartTime - Cron.GameTimeNow;
+                TimeSpan s1 = EventStartTime - AdjustedDateTime.GameTime;
                 TimeSpan s2 = TimeSpan.FromMinutes(20.0);
                 TimeSpan span = (s1 > s2) ? s2 : s1;
 
@@ -1202,7 +1202,7 @@ namespace Server
             else if (EventStarted == true && EventEnded == false)
             {
                 // remainder of event
-                TimeSpan span = EventEndTime - Cron.GameTimeNow;
+                TimeSpan span = EventEndTime - AdjustedDateTime.GameTime;
 
                 // Setup the Town Crier with a new message
                 string[] lines = new string[2];
@@ -1213,7 +1213,7 @@ namespace Server
                 }
                 else
                 {
-                    TimeSpan HowLong = ChestOpenTime - Cron.GameTimeNow;
+                    TimeSpan HowLong = ChestOpenTime - AdjustedDateTime.GameTime;
                     bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
                     // what we want the Town Crier to say
@@ -1249,7 +1249,7 @@ namespace Server
         public override void OnBroadcast()
         {
             // issue a final event announcement
-            TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+            TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
             bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
             string line = String.Format(
@@ -1610,11 +1610,11 @@ namespace Server
 
         public ServerWarsAES()
         {
-            AnnounceTime = Cron.GameTimeNow;                        // when we make TC announcements
+            AnnounceTime = AdjustedDateTime.GameTime;                        // when we make TC announcements
 
             if (m_test == false)
             {
-                EventStartTime = Cron.GameTimeNow.AddDays(1.0);         // 24 hours from now
+                EventStartTime = AdjustedDateTime.GameTime.AddDays(1.0);         // 24 hours from now
                 EventEndTime = EventStartTime.AddHours(3.0);        // 3 hour event
                 AnnounceDelta = TimeSpan.FromHours(1.0);            //	each hour
                 BroadcastTime = EventStartTime.AddHours(-1.0);      // 1 hour before start - final Broadcast
@@ -1622,7 +1622,7 @@ namespace Server
             }
             else
             {
-                EventStartTime = Cron.GameTimeNow.AddMinutes(10.0);     // (TEST)
+                EventStartTime = AdjustedDateTime.GameTime.AddMinutes(10.0);     // (TEST)
                 EventEndTime = EventStartTime.AddMinutes(10.0);     // (TEST)
                 AnnounceDelta = TimeSpan.FromMinutes(2.0);      // (TEST)
                 BroadcastTime = EventStartTime.AddMinutes(-2.0);    // (TEST)
@@ -1647,7 +1647,7 @@ namespace Server
         public override void OnServerRestart()
         {   // What's going on here is no bug, it's just a reality of restarting the server
             //	without saving the current state.
-            if (Cron.GameTimeNow > FinalCleanup)
+            if (AdjustedDateTime.GameTime > FinalCleanup)
             {
                 // tell our base class to stop processing.
                 //	the base will also begin cleanup
@@ -1685,7 +1685,7 @@ namespace Server
             // pre event announcements
             if (EventStarted == false)
             {
-                TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+                TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
                 bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
                 // what we want the Town Crier to say
@@ -1700,7 +1700,7 @@ namespace Server
                 lines[3] = String.Format("Wait for the system message stating server wars have started.");
 
                 // use the smaller of the time spans
-                TimeSpan s1 = EventStartTime - Cron.GameTimeNow;
+                TimeSpan s1 = EventStartTime - AdjustedDateTime.GameTime;
                 TimeSpan s2 = TimeSpan.FromMinutes(20.0);
                 TimeSpan span = (s1 > s2) ? s2 : s1;
 
@@ -1712,7 +1712,7 @@ namespace Server
             else if (EventStarted == true && EventEnded == false && FinalSaveComplete())
             {
                 // remainder of event
-                TimeSpan span = EventEndTime - Cron.GameTimeNow;
+                TimeSpan span = EventEndTime - AdjustedDateTime.GameTime;
 
                 // Setup the Town Crier with a new message
                 string[] lines = new string[2];
@@ -1738,7 +1738,7 @@ namespace Server
         public override void OnBroadcast()
         {
             // issue a final event announcement
-            TimeSpan HowLong = EventStartTime - Cron.GameTimeNow;
+            TimeSpan HowLong = EventStartTime - AdjustedDateTime.GameTime;
             bool bInHours = HowLong > TimeSpan.FromMinutes(120.0);
 
             string line = String.Format(

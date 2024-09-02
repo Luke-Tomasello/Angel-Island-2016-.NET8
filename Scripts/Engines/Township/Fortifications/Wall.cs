@@ -82,8 +82,8 @@ namespace Server.Township
         private int m_MaxHits = 100;
         private int m_Hits = 100;
         private SkillName m_RepairSkill = SkillName.Tinkering;
-        DateTime m_LastRepair = DateTime.Now;
-        DateTime m_LastDamage = DateTime.Now;
+        DateTime m_LastRepair = DateTime.UtcNow;
+        DateTime m_LastDamage = DateTime.UtcNow;
 
         private Mobile m_RepairWorker = null; //Note that this should not be serialized
         private Mobile m_DamageWorker = null; //Note that this should not be serialized
@@ -379,8 +379,8 @@ namespace Server.Township
             m_OriginalMaxHits = baseHits;
             m_MaxHits = m_OriginalMaxHits;
             m_Hits = m_MaxHits;
-            m_LastRepair = DateTime.Now;
-            m_LastDamage = DateTime.Now;
+            m_LastRepair = DateTime.UtcNow;
+            m_LastDamage = DateTime.UtcNow;
         }
 
         public void DamageWeapon(BaseWeapon w)
@@ -447,7 +447,7 @@ namespace Server.Township
 
             if (repair)
             {
-                if (DateTime.Now < m_LastRepair.AddDays(daysPerWork))
+                if (DateTime.UtcNow < m_LastRepair.AddDays(daysPerWork))
                 {
                     m.SendMessage("The wall has been rapaired recently, this wall cannot be worked on yet.");
                     return;
@@ -472,7 +472,7 @@ namespace Server.Township
             }
             else
             {
-                if (!full && DateTime.Now < m_LastDamage.AddDays(daysPerWork))
+                if (!full && DateTime.UtcNow < m_LastDamage.AddDays(daysPerWork))
                 {
                     m.SendMessage("The wall has been damaged recently, this wall cannot be worked on yet.");
                     return;
@@ -500,8 +500,8 @@ namespace Server.Township
                 daysPerRepair = 1 / (24 * 60); //once per minute on TC
             }
 
-            if ((repair && DateTime.Now < m_LastRepair.AddDays(daysPerRepair)) ||
-                 (!repair && !full && DateTime.Now < m_LastDamage.AddDays(daysPerRepair)))
+            if ((repair && DateTime.UtcNow < m_LastRepair.AddDays(daysPerRepair)) ||
+                 (!repair && !full && DateTime.UtcNow < m_LastDamage.AddDays(daysPerRepair)))
             {
                 m.SendMessage("The wall has been worked on recently, this wall cannot be worked on yet.");
                 return;
@@ -563,7 +563,7 @@ namespace Server.Township
             //2010.05.24-Pix - attempting to simplify code - one repair and one damage block
             if (repair)
             {
-                m_LastRepair = DateTime.Now;
+                m_LastRepair = DateTime.UtcNow;
                 m_RepairWorker = null; //safety!
 
                 hitsDiff = m_MaxHits - m_Hits;
@@ -597,7 +597,7 @@ namespace Server.Township
                 // Secondly, since we do a skill check, we're awarding carpentry skill points for free (while we grief the township owner). This 
                 //	seems unbalanced
                 //	HACK: reduce damage to average 1 HP per 120 seconds AND require a special tool (not bare hands, and not a newbied ax)
-                //                m_LastDamage = DateTime.Now;
+                //                m_LastDamage = DateTime.UtcNow;
                 //                m_DamageWorker = null; //safety!
                 //
                 //                hitsDiff = Utility.RandomBool() ? 0 : 2;	// average 1 hp damage
@@ -621,7 +621,7 @@ namespace Server.Township
                 //                return;
                 #endregion
 
-                m_LastDamage = DateTime.Now;
+                m_LastDamage = DateTime.UtcNow;
                 m_DamageWorker = null; //safety!
 
                 double skillLevel = m.Skills[m_RepairSkill].Base;
@@ -679,7 +679,7 @@ namespace Server.Township
 			//	HACK: reduce damage to average 1 HP per 120 seconds AND require a special tool (not bare hands, and not a newbied ax)
 			if (repair == false)
 			{	// we're damaging the wall
-				m_LastDamage = DateTime.Now;
+				m_LastDamage = DateTime.UtcNow;
 				m_DamageWorker = null; //safety!
 
 				hitsDiff = Utility.RandomBool() ? 0 : 2;	// average 1 hp damage
@@ -706,12 +706,12 @@ namespace Server.Township
 
 			if (repair)
 			{
-				m_LastRepair = DateTime.Now;
+				m_LastRepair = DateTime.UtcNow;
 				m_RepairWorker = null; //safety!
 			}
 			else
 			{
-				m_LastDamage = DateTime.Now;
+				m_LastDamage = DateTime.UtcNow;
 				m_DamageWorker = null; //safety!
 			}
 
@@ -962,7 +962,7 @@ namespace Server.Township
                             this.Stop();
                             m_Mobile.SendMessage("You build the wall.");
 
-                            m_Wall.PlacementDate = DateTime.Now;
+                            m_Wall.PlacementDate = DateTime.UtcNow;
                             m_Wall.Placer = m_Mobile;
                             m_Wall.SetInitialHits();
                             m_Wall.MoveToWorld(m_Location, m_Map);

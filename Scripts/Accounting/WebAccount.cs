@@ -405,7 +405,7 @@ namespace Server.Engines.AngelIsland.WebAccount
 		{
 			string charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 			string strPassword = "";
-			System.Random r = new Random(DateTime.Now.Millisecond);
+			System.Random r = new Random(DateTime.UtcNow.Millisecond);
 
 			for(int i=0; i<10; i++)
 			{
@@ -429,7 +429,7 @@ namespace Server.Engines.AngelIsland.WebAccount
 					logwriter = new StreamWriter(logfilename , true );
 					if( logwriter != null )
 					{
-						Log("Logging started " + DateTime.Now);
+						Log("Logging started " + DateTime.UtcNow);
 					}
 				}
 				catch(Exception e)

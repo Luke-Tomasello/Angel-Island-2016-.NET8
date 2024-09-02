@@ -109,7 +109,7 @@ namespace Server.Items
                 {
                     if (from is PlayerMobile)
                     {
-                        TimeSpan x = (DateTime.Now - ((PlayerMobile)from).LastUsedLockpick);
+                        TimeSpan x = (DateTime.UtcNow - ((PlayerMobile)from).LastUsedLockpick);
                         if (x < TimeSpan.FromSeconds(3.5)) //time to pick is 3.0 sec, so this should be >
                         {
                             if (x < TimeSpan.FromSeconds(1.0))
@@ -126,7 +126,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            ((PlayerMobile)from).LastUsedLockpick = DateTime.Now;
+                            ((PlayerMobile)from).LastUsedLockpick = DateTime.UtcNow;
                         }
                     }
 

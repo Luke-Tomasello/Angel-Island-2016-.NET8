@@ -157,7 +157,7 @@ namespace Server.Items
             private ArrayList m_lines;  // properties and values
 
             public SetTimer(TimedSet owner, Item item, ArrayList lines, DateTime time)
-                : base(time - DateTime.Now)
+                : base(time - DateTime.UtcNow)
             {
                 m_Owner = owner;
                 m_Item = item;

@@ -97,7 +97,7 @@ namespace Server.Misc
                     string strParam = e.GetString(0);
 
                     // default is 5 minutes from now
-                    m_When = DateTime.Now + TimeSpan.FromMinutes(5);
+                    m_When = DateTime.UtcNow + TimeSpan.FromMinutes(5);
 
                     if (e.Length > 1)
                     {   // we have a date-time param
@@ -113,13 +113,15 @@ namespace Server.Misc
                             return;
                         }
 
-                        TimeSpan diff = m_When.Subtract(DateTime.Now);
+                        TimeSpan diff = m_When.Subtract(DateTime.UtcNow);
                         m_Countdown = (int)diff.TotalMinutes;
                     }
 
                     if (strParam.ToLower().Equals("cancel"))
                     {
                         m_Scheduled = false;
+                        m_Countdown = 5;
+                        m_When = DateTime.MinValue;
                         if (m_Rebuild)
                         {
                             if (KillRebuild())
@@ -128,7 +130,7 @@ namespace Server.Misc
                                 Rebuild = false;
                             }
                             else
-                                e.Mobile.SendMessage("Error closeing rebuild.exe!!!");
+                                e.Mobile.SendMessage("Error closing rebuild.exe!!!");
                         }
                         AutoSave.SavesEnabled = true;
                         e.Mobile.SendMessage("Maintenance has been canceled.");

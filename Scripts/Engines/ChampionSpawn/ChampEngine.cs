@@ -254,7 +254,7 @@ namespace Server.Engines.ChampionSpawn
                     m_Kills = 0;
                     m_LevelCounter = value;
                     // reset level down time
-                    m_ExpireTime = DateTime.Now + Lvl_ExpireDelay;
+                    m_ExpireTime = DateTime.UtcNow + Lvl_ExpireDelay;
                 }
             }
         }
@@ -277,7 +277,7 @@ namespace Server.Engines.ChampionSpawn
             get
             {
                 if (!m_bActive && m_Restart != null)
-                    return m_End - DateTime.Now;
+                    return m_End - DateTime.UtcNow;
                 else
                     return TimeSpan.FromSeconds(0);
             }
@@ -434,8 +434,8 @@ namespace Server.Engines.ChampionSpawn
             // assgin initial values..
             Visible = false;
             Movable = false;
-            m_ExpireTime = DateTime.Now;
-            m_SpawnTime = DateTime.Now;
+            m_ExpireTime = DateTime.UtcNow;
+            m_SpawnTime = DateTime.UtcNow;
             m_RestartDelay = TimeSpan.FromMinutes(5);
             m_Monsters = new ArrayList();
             m_FreeMonsters = new ArrayList();
@@ -540,7 +540,7 @@ namespace Server.Engines.ChampionSpawn
                     }
                 case 1:
                     {
-                        ts = reader.ReadDeltaTime() - DateTime.Now;
+                        ts = reader.ReadDeltaTime() - DateTime.UtcNow;
                         goto case 0;
                     }
                 case 0:
@@ -633,7 +633,7 @@ namespace Server.Engines.ChampionSpawn
             m_Slice.Start();
 
             // reset level expire delay
-            m_ExpireTime = DateTime.Now + Lvl_ExpireDelay;
+            m_ExpireTime = DateTime.UtcNow + Lvl_ExpireDelay;
         }
 
         protected void StopSlice()
@@ -723,7 +723,7 @@ namespace Server.Engines.ChampionSpawn
                 else
                 {
                     // level down if the time's up!
-                    if (DateTime.Now >= m_ExpireTime)
+                    if (DateTime.UtcNow >= m_ExpireTime)
                         Expire();
 
                     // Call spawn top-up function
@@ -817,8 +817,8 @@ namespace Server.Engines.ChampionSpawn
                 }
                 ++m_LevelCounter;
                 //reset expire time
-                m_ExpireTime = DateTime.Now + Lvl_ExpireDelay;
-                m_SpawnTime = DateTime.Now;
+                m_ExpireTime = DateTime.UtcNow + Lvl_ExpireDelay;
+                m_SpawnTime = DateTime.UtcNow;
             }
             else
             {
@@ -847,7 +847,7 @@ namespace Server.Engines.ChampionSpawn
             if (!m_bActive || Deleted)
                 return;
 
-            if (DateTime.Now < m_SpawnTime)
+            if (DateTime.UtcNow < m_SpawnTime)
                 return;
 
             // Check to see if we can spawn more monsters				
@@ -866,7 +866,7 @@ namespace Server.Engines.ChampionSpawn
                 m.MoveToWorld(GetSpawnLocation(m), Map);
                 PrepMob(m);
             }
-            m_SpawnTime = DateTime.Now + Lvl_SpawnDelay;
+            m_SpawnTime = DateTime.UtcNow + Lvl_SpawnDelay;
 
             // if free list has monsters in it, we convert them one a second 
             // preferably away from the players
@@ -956,7 +956,7 @@ namespace Server.Engines.ChampionSpawn
                 {
                     Kills = 0;
                 }
-                m_ExpireTime = DateTime.Now + Lvl_ExpireDelay;
+                m_ExpireTime = DateTime.UtcNow + Lvl_ExpireDelay;
             }
         }
 
@@ -988,7 +988,7 @@ namespace Server.Engines.ChampionSpawn
             if (m_bActive)  //cant have a restart if the champ is on
                 return;
 
-            m_End = DateTime.Now + delay;
+            m_End = DateTime.UtcNow + delay;
 
             if (m_Restart != null)
                 m_Restart.Stop();

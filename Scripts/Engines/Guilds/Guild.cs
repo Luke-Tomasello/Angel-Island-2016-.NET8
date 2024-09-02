@@ -99,7 +99,7 @@ namespace Server.Guilds
                 if (m_IOBAlignment != value)
                 {
                     m_IOBAlignment = value;
-                    m_TypeLastChange = DateTime.Now;
+                    m_TypeLastChange = DateTime.UtcNow;
 
                     InvalidateMemberProperties();
                 }
@@ -114,7 +114,7 @@ namespace Server.Guilds
 
         private bool CanJoinIOB()
         {
-            if (m_LastIOBChangeTime + TimeSpan.FromDays(m_JoinDelay) > DateTime.Now)
+            if (m_LastIOBChangeTime + TimeSpan.FromDays(m_JoinDelay) > DateTime.UtcNow)
                 return false;
 
             return true;
@@ -126,7 +126,7 @@ namespace Server.Guilds
                 Engines.IOBSystem.IOBSystem.GetIOBName(IOBAlignment), m_JoinDelay);
             GuildMessage(message);
 
-            m_LastIOBChangeTime = DateTime.Now;
+            m_LastIOBChangeTime = DateTime.UtcNow;
             m_IOBAlignment = IOBAlignment.None;
         }
 
@@ -252,7 +252,7 @@ namespace Server.Guilds
             m_Candidates = new ArrayList();
             m_Accepted = new ArrayList();
 
-            m_LastFealty = DateTime.Now;
+            m_LastFealty = DateTime.UtcNow;
 
             m_Name = name;
             m_Abbreviation = abbreviation;
@@ -700,7 +700,7 @@ namespace Server.Guilds
             }
 
             m_Leader = winner;
-            m_LastFealty = DateTime.Now;
+            m_LastFealty = DateTime.UtcNow;
         }
 
         public GuildFlags Flags
@@ -873,7 +873,7 @@ namespace Server.Guilds
                 if (m_Type != value)
                 {
                     m_Type = value;
-                    m_TypeLastChange = DateTime.Now;
+                    m_TypeLastChange = DateTime.UtcNow;
 
                     InvalidateMemberProperties();
                 }

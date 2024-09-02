@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (DateTime.Now >= m_NextSpeechTime)
+            if (DateTime.UtcNow >= m_NextSpeechTime)
             {
                 PlayerMobile pm = m as PlayerMobile;
                 if (pm != null && pm.AccessLevel == AccessLevel.Player && !m.Hidden && m.Alive && m.Location != oldLocation && m.InRange(this, 8))
@@ -183,7 +183,7 @@ namespace Server.Mobiles
                                 }
                         }
 
-                        m_NextSpeechTime = DateTime.Now + m_SpeechDelay;
+                        m_NextSpeechTime = DateTime.UtcNow + m_SpeechDelay;
                     }
                 }
             }

@@ -56,7 +56,7 @@ namespace Server.Misc
             public Server.Accounting.Account Account { get { return m_Account; } }
             public WatchDog(Mobile m)
             {
-                m_DateTime = DateTime.Now + m.GetLogoutDelay();
+                m_DateTime = DateTime.UtcNow + m.GetLogoutDelay();
                 m_Account = m.Account as Server.Accounting.Account;
             }
         }
@@ -126,7 +126,7 @@ namespace Server.Misc
                 // if one of these accounts is null, then this test delived a false positive whereby prohibiting the player from logging in
                 Diagnostics.Assert(m_IPMRU[ourAddress].Account != null && acct != null, "Account null in IPStillHot()");
 
-                if (DateTime.Now < m_IPMRU[ourAddress].Limit)
+                if (DateTime.UtcNow < m_IPMRU[ourAddress].Limit)
                     return true;
             }
 

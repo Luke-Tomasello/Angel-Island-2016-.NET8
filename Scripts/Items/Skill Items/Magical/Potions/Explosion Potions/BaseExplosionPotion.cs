@@ -186,7 +186,7 @@ namespace Server.Items
             BaseWeapon weapon = from.Weapon as BaseWeapon;
             if (weapon != null)
             {
-                from.NextCombatTime = DateTime.Now + weapon.GetDelay(from);
+                from.NextCombatTime = DateTime.UtcNow + weapon.GetDelay(from);
             }
 
             ThrowTarget targ = from.Target as ThrowTarget;
@@ -348,7 +348,7 @@ namespace Server.Items
                 BaseWeapon weapon = from.Weapon as BaseWeapon;
                 if (weapon != null)
                 {
-                    from.NextCombatTime = DateTime.Now + weapon.GetDelay(from);
+                    from.NextCombatTime = DateTime.UtcNow + weapon.GetDelay(from);
                 }
 
                 if (m_Potion.Deleted || m_Potion.Map == Map.Internal)

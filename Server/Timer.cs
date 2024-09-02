@@ -29,7 +29,7 @@
  *      Sometimes on server restart players are not able to logon. I suspect that the timer queue is kicking off 
  *      before the server is fully up and causing the problem. I've added an initial (one time) 5 second sleep to the 
  *      timer queuing logic to ensure we are alive before beginning to process messages.
- *      - exit the timer queue processing if we exceed DateTime.Now < breakTime time
+ *      - exit the timer queue processing if we exceed DateTime.UtcNow < breakTime time
  *  2/26/07, Adam
  *      I found we were running timers AFTER Stop() is called
  *      This is apparently supported behavior, and actually makes some sense if you 
@@ -420,7 +420,7 @@ namespace Server
 
                     if (tce.m_IsAdd)
                     {
-                        timer.m_Next = DateTime.Now + timer.m_Delay;
+                        timer.m_Next = DateTime.UtcNow + timer.m_Delay;
                         timer.m_Index = 0;
                     }
 
@@ -455,7 +455,7 @@ namespace Server
 
                     for (i = 0; i < m_Timers.Length; i++)
                     {
-                        now = DateTime.Now;
+                        now = DateTime.UtcNow;
                         if (now < m_NextPriorities[i])
                             break;
 
@@ -526,15 +526,15 @@ namespace Server
 
                 int index = 0;
                 DateTime start = DateTime.MinValue;
-                DateTime breakTime = DateTime.Now + m_BreakTime;
+                DateTime breakTime = DateTime.UtcNow + m_BreakTime;
 
-                while (index < m_BreakCount && DateTime.Now < breakTime && m_Queue.Count != 0)
+                while (index < m_BreakCount && DateTime.UtcNow < breakTime && m_Queue.Count != 0)
                 {
                     Timer t = (Timer)m_Queue.Dequeue();
                     TimerProfile prof = t.GetProfile();
 
                     if (prof != null)
-                        start = DateTime.Now;
+                        start = DateTime.UtcNow;
 
                     // Adam: See comments at top of file regarding timer.Flush()
                     if (t.Eat == true)
@@ -551,15 +551,15 @@ namespace Server
                     ++index;
 
                     if (prof != null)
-                        prof.RegTicked(DateTime.Now - start);
+                        prof.RegTicked(DateTime.UtcNow - start);
 
                 }//while !empty
 
                 if (index >= m_BreakCount)
                     Console.WriteLine("Timer.Slice: index >= m_BreakCount");
 
-                if (DateTime.Now >= breakTime)
-                    Console.WriteLine("Timer.Slice: DateTime.Now >= breakTime");
+                if (DateTime.UtcNow >= breakTime)
+                    Console.WriteLine("Timer.Slice: DateTime.UtcNow >= breakTime");
             }
         }
 

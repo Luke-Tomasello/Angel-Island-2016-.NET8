@@ -140,7 +140,7 @@ namespace Server.Mobiles
 
                 GiftBox Giftbox = new GiftBox();
 
-                string year = DateTime.Now.Year.ToString();
+                string year = DateTime.UtcNow.Year.ToString();
                 string Signature = "Christmas " + year;
 
                 Giftbox.Name = Signature;

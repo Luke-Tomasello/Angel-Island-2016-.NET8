@@ -107,7 +107,7 @@ namespace Server.Engines
                 {
                     broker.SayTo(from, "I'm sorry, but your rule book has errors in it.");
                     // give them another 2 minutes to fix and return the rule book
-                    m_StateTimer[States.WaitBookReturn] = DateTime.Now + TimeSpan.FromSeconds(120);
+                    m_StateTimer[States.WaitBookReturn] = DateTime.UtcNow + TimeSpan.FromSeconds(120);
                     return;
                 }
 
@@ -635,10 +635,10 @@ namespace Server.Engines
         {
             if (m_StateTimer.ContainsKey(States.PlayRound))
             {
-                if (DateTime.Now > m_StateTimer[States.PlayRound])
+                if (DateTime.UtcNow > m_StateTimer[States.PlayRound])
                     return TimeSpan.Zero;
                 else
-                    return m_StateTimer[States.PlayRound] - DateTime.Now;
+                    return m_StateTimer[States.PlayRound] - DateTime.UtcNow;
             }
             else
                 return TimeSpan.Zero;
@@ -725,7 +725,7 @@ namespace Server.Engines
         //	and tying up the system by holding it in a registration state whereby preventing other players from playing.
         protected class PlayerRequests
         {
-            public DateTime LastQuestion = DateTime.Now;    // last time the player tried to register
+            public DateTime LastQuestion = DateTime.UtcNow;    // last time the player tried to register
             public int Count = 0;                           // number of registrations allowed
 #if DEBUG
             private const int Limit = 100;                  // number of times a player can request registration (without playing)
@@ -737,9 +737,9 @@ namespace Server.Engines
                 get
                 {
                     // a new day == a fresh start!
-                    if (LastQuestion.DayOfYear != DateTime.Now.DayOfYear)
+                    if (LastQuestion.DayOfYear != DateTime.UtcNow.DayOfYear)
                     {
-                        LastQuestion = DateTime.Now;
+                        LastQuestion = DateTime.UtcNow;
                         Count = 0;
                         return true;
                     }

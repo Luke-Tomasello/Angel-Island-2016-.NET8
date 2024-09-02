@@ -359,7 +359,7 @@ namespace Server
 				{
 					if (m_Status == JobStatus.New)
 					{
-						m_Enqueued = DateTime.Now;
+						m_Enqueued = DateTime.UtcNow;
 						if (JobManager.Enqueue(this, priority))
 						{
 							m_Status = JobStatus.Enqueued;
@@ -412,7 +412,7 @@ namespace Server
             {
                 using (TimedLock.Lock(SyncRoot)) // this.SyncRoot
                 {
-                    m_Enqueued = DateTime.Now;
+                    m_Enqueued = DateTime.UtcNow;
                 }
             }
             catch (Exception e)
@@ -934,7 +934,7 @@ namespace Server
                         m_LastError = 2;
                     }
                     if (print)
-                        Console.WriteLine("{0} JM Error: Rejected job because queue was full.", DateTime.Now);
+                        Console.WriteLine("{0} JM Error: Rejected job because queue was full.", DateTime.UtcNow);
                 }
                 catch (Exception e)
                 {
@@ -956,7 +956,7 @@ namespace Server
                         m_LastError = 1;
                     }
                     if (print)
-                        Console.WriteLine("{0} JM Warning: Queue length exceeds half of hard limit.", DateTime.Now);
+                        Console.WriteLine("{0} JM Warning: Queue length exceeds half of hard limit.", DateTime.UtcNow);
                 }
                 catch (Exception e)
                 {
@@ -1063,7 +1063,7 @@ namespace Server
 					
 					// promote old jobs to a higher priority - no higher than High
 					// only one promotion per priority per iteration
-					DateTime promotion  = DateTime.Now - TimeSpan.FromMilliseconds(PriorityPromotionDelay);
+					DateTime promotion  = DateTime.UtcNow - TimeSpan.FromMilliseconds(PriorityPromotionDelay);
 					for (int i = (int)JobPriority.Low; i < (int)JobPriority.High; i++)
 					{
 						if (m_Jobs[i].Count  == 0)

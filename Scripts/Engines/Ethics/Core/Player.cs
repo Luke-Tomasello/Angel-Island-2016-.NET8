@@ -97,7 +97,7 @@ namespace Server.Ethics
                 if (m_Shield == DateTime.MinValue)
                     return false;
 
-                if (DateTime.Now < (m_Shield + TimeSpan.FromHours(1.0)))
+                if (DateTime.UtcNow < (m_Shield + TimeSpan.FromHours(1.0)))
                     return true;
 
                 FinishShield();
@@ -107,7 +107,7 @@ namespace Server.Ethics
 
         public void BeginShield()
         {
-            m_Shield = DateTime.Now;
+            m_Shield = DateTime.UtcNow;
         }
 
         public void FinishShield()

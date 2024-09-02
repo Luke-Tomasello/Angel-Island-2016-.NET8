@@ -1390,7 +1390,7 @@ namespace Server.Network
         {
             Mobile from = state.Mobile;
 
-            if (from.AccessLevel >= AccessLevel.Counselor || DateTime.Now >= from.NextActionTime)
+            if (from.AccessLevel >= AccessLevel.Counselor || DateTime.UtcNow >= from.NextActionTime)
             {
                 int value = pvSrc.ReadInt32();
 
@@ -1418,7 +1418,7 @@ namespace Server.Network
                     }
                 }
 
-                from.NextActionTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
+                from.NextActionTime = DateTime.UtcNow + TimeSpan.FromSeconds(0.5);
             }
             else
             {
@@ -2176,7 +2176,7 @@ namespace Server.Network
                 if (m_AuthIDWindow[i] == 0)
                 {
                     m_AuthIDWindow[i] = authID;
-                    m_AuthIDWindowAge[i] = DateTime.Now;
+                    m_AuthIDWindowAge[i] = DateTime.UtcNow;
                     wasSet = true;
                     break;
                 }
@@ -2190,7 +2190,7 @@ namespace Server.Network
             if (!wasSet)
             {
                 m_AuthIDWindow[oldestIndex] = authID;
-                m_AuthIDWindowAge[oldestIndex] = DateTime.Now;
+                m_AuthIDWindowAge[oldestIndex] = DateTime.UtcNow;
             }
 
             return authID;

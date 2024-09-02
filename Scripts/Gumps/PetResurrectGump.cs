@@ -46,7 +46,7 @@ namespace Server.Gumps
             from.CloseGump(typeof(PetResurrectGump));
 
             bool bStatLoss = false;
-            if (pet.BondedDeadPetStatLossTime > DateTime.Now)
+            if (pet.BondedDeadPetStatLossTime > DateTime.UtcNow)
             {
                 bStatLoss = true;
             }
@@ -106,7 +106,7 @@ namespace Server.Gumps
                 //				for ( int i = 0; i < m_Pet.Skills.Length; ++i )	//Decrease all skills on pet.
                 //					m_Pet.Skills[i].Base -= decreaseAmount;
 
-                if (m_Pet.BondedDeadPetStatLossTime > DateTime.Now)
+                if (m_Pet.BondedDeadPetStatLossTime > DateTime.UtcNow)
                 {
                     // Reduce all skills on pet by 10%
                     for (int i = 0; i < m_Pet.Skills.Length; ++i)

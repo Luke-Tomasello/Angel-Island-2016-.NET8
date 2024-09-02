@@ -43,7 +43,7 @@ namespace Server.Accounting
         public string Content
         {
             get { return m_Content; }
-            set { m_Content = value; m_LastModified = DateTime.Now; }
+            set { m_Content = value; m_LastModified = DateTime.UtcNow; }
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Server.Accounting
         {
             m_AddedBy = addedBy;
             m_Content = content;
-            m_LastModified = DateTime.Now;
+            m_LastModified = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Server.Accounting
         public AccountComment(XmlElement node)
         {
             m_AddedBy = Accounts.GetAttribute(node, "addedBy", "empty");
-            m_LastModified = Accounts.GetDateTime(Accounts.GetAttribute(node, "lastModified"), DateTime.Now);
+            m_LastModified = Accounts.GetDateTime(Accounts.GetAttribute(node, "lastModified"), DateTime.UtcNow);
             m_Content = Accounts.GetText(node, "");
         }
 
@@ -86,7 +86,7 @@ namespace Server.Accounting
             xml.WriteStartElement("comment");
 
             xml.WriteAttributeString("addedBy", m_AddedBy);
-            xml.WriteAttributeString("lastModified", XmlConvert.ToString(m_LastModified));
+            xml.WriteAttributeString("lastModified", XmlConvert.ToString(m_LastModified, XmlDateTimeSerializationMode.Utc));
 
             xml.WriteString(m_Content);
 

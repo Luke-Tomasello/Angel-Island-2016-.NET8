@@ -358,7 +358,7 @@ namespace Server.Gumps
 
                                         m_Account.ActivationKey = newActivationKey;
                                         m_Account.AccountActivated = false;
-                                        m_Account.LastActivationResendTime = DateTime.Now;
+                                        m_Account.LastActivationResendTime = DateTime.UtcNow;
 
 
                                         //Notify user.
@@ -379,7 +379,7 @@ namespace Server.Gumps
                             }
                         case RESEND_ACTIVATION:
                             {
-                                if (m_Account.LastActivationResendTime + TimeSpan.FromHours(24.0) > DateTime.Now)
+                                if (m_Account.LastActivationResendTime + TimeSpan.FromHours(24.0) > DateTime.UtcNow)
                                 {
                                     m_From.SendMessage(0x35, "You can only send an activation email once every 24 hours.");
                                 }
@@ -391,7 +391,7 @@ namespace Server.Gumps
 
                                     if (bSent)
                                     {
-                                        m_Account.LastActivationResendTime = DateTime.Now;
+                                        m_Account.LastActivationResendTime = DateTime.UtcNow;
                                         m_From.SendMessage(0x35, "The activation email has been resent to " + email);
                                     }
                                     else
@@ -563,7 +563,7 @@ namespace Server.Gumps
         {
             string charset = "ABCDEF123456789";
             string strPassword = "";
-            System.Random r = new Random(DateTime.Now.Millisecond);
+            System.Random r = new Random(DateTime.UtcNow.Millisecond);
 
             for (int i = 0; i < length; i++)
             {

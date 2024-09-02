@@ -163,7 +163,7 @@ namespace Server.SkillHandlers
                     }
                     else if (m_Creature != creature)
                     {
-                        from.NextSkillTime = DateTime.Now + TimeSpan.FromSeconds(10.0);
+                        from.NextSkillTime = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
 
                         double diff = ((m_Instrument.GetDifficultyFor(m_Creature) + m_Instrument.GetDifficultyFor(creature)) * 0.5) - 5.0;
                         double music = from.Skills[SkillName.Musicianship].Value;
@@ -232,7 +232,7 @@ namespace Server.SkillHandlers
                     }
                     else //valid pair
                     {
-                        from.NextSkillTime = DateTime.Now + TimeSpan.FromSeconds(10.0);      //Appropriate skill delay added by Old Salty
+                        from.NextSkillTime = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);      //Appropriate skill delay added by Old Salty
 
                         double diff = ((m_Instrument.GetDifficultyFor(m_Creature) + m_Instrument.GetDifficultyFor(player)) * 0.5) - 5.0;
                         double music = from.Skills[SkillName.Musicianship].Value;
