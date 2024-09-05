@@ -186,6 +186,19 @@ namespace Server.Items
             : base(serial)
         {
         }
+        
+        [CommandProperty(AccessLevel.Owner)]
+        public bool TentAnnexation
+        {
+            get
+            {
+                return CoreAI.TentAnnexation;
+            }
+            set
+            {
+                CoreAI.TentAnnexation = value;
+            }
+        }
 
         [CommandProperty(AccessLevel.Administrator)]
         public CoreAI.WorldSize CurrentWorldSize
