@@ -400,7 +400,7 @@ namespace Server.Items
                 {
                     PlayerMobile pm = (PlayerMobile)m;
 
-                    if (Core.UOMO || Core.UOAI || Core.UOAR)
+                    if (Core.UOMO || Core.UOAI || Core.UOREN)
                         if (this.IOBAlignment != IOBAlignment.None)
                         {
                             if (pm.IOBEquipped == true)
@@ -1377,7 +1377,7 @@ namespace Server.Items
                     GemType = GemType.Diamond;
             }
 
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {
                 if (makersMark)
                     this.Crafter = from;

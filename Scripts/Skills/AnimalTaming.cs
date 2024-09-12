@@ -59,12 +59,12 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            if (Core.UOAI || Core.UOAR || Core.UOMO || PublishInfo.Publish >= 13.6)
+            if (Core.UOAI || Core.UOREN || Core.UOMO || PublishInfo.Publish >= 13.6)
                 m.RevealingAction();
 
             m.Target = new InternalTarget();
 
-            if (Core.UOAI || Core.UOAR || Core.UOMO || PublishInfo.Publish >= 13.6)
+            if (Core.UOAI || Core.UOREN || Core.UOMO || PublishInfo.Publish >= 13.6)
                 m.RevealingAction();
 
             if (!m_DisableMessage)
@@ -136,7 +136,7 @@ namespace Server.SkillHandlers
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (Core.UOAI || Core.UOAR || Core.UOMO || PublishInfo.Publish >= 13.6)
+                if (Core.UOAI || Core.UOREN || Core.UOMO || PublishInfo.Publish >= 13.6)
                     from.RevealingAction();
 
                 if (targeted is Mobile)
@@ -309,7 +309,7 @@ namespace Server.SkillHandlers
                     }
                     else
                     {
-                        if (Core.UOAI || Core.UOAR || Core.UOMO || PublishInfo.Publish >= 13.6)
+                        if (Core.UOAI || Core.UOREN || Core.UOMO || PublishInfo.Publish >= 13.6)
                             m_Tamer.RevealingAction();
 
                         m_Tamer.NextSkillTime = DateTime.UtcNow;

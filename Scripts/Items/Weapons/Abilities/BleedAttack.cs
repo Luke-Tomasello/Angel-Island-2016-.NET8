@@ -82,7 +82,7 @@ namespace Server.Items
                     damage *= 2;
 
                 m.PlaySound(0x133);
-                m.Damage(damage, from);
+                m.Damage(damage, from, source_weapon: from);
 
                 Blood blood = new Blood();
 

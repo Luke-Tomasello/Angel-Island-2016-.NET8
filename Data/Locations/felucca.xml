@@ -72,7 +72,7 @@
         <child name="Entrance" x="2043" y="238" z="10" />
         <child name="Level 1" x="5825" y="630" z="0" />
         <child name="Level 2" x="5690" y="569" z="25" />
-        <child name="Level 3" x="5703" y="639" z="0" />
+        <child name="Level 3" x="5703" y="639" z="5" />
       </parent>
       <parent name="Miscellaneous">
         <child name="Hyloth Fire Pit" x="4596" y="3630" z="30" />

@@ -141,7 +141,7 @@ namespace Server.Mobiles
 
             InitStats(250, 250, 250);
 
-            if (!Core.UOAI && !Core.UOAR)
+            if (!Core.UOAI && !Core.UOREN)
                 SetDamage(20, 25);
 
             Title = "the guard";
@@ -187,7 +187,7 @@ namespace Server.Mobiles
                 AddItem(new PlateArms());
                 AddItem(new PlateLegs());
 
-                if (Core.UOAI || Core.UOAR)
+                if (Core.UOAI || Core.UOREN)
                     AddItem(new PlateGorget());
 
                 switch (Utility.Random(3))
@@ -222,7 +222,7 @@ namespace Server.Mobiles
             weapon.Movable = false;
             weapon.Quality = WeaponQuality.Exceptional;
 
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {
                 weapon.Crafter = null;
                 weapon.Slayer = SlayerName.Silver;
@@ -245,7 +245,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 115, 120.0);
             SetSkill(SkillName.DetectHidden, 88, 92);
 
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {
                 SetSkill(SkillName.EvalInt, 115, 120.0);
                 SetSkill(SkillName.Magery, 115, 120.0);
@@ -274,7 +274,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {
                 // 1% chance to drop hally since we really want players farming vampires for slayers
                 if (Utility.RandomChance(1))
@@ -306,7 +306,7 @@ namespace Server.Mobiles
         public override bool OnBeforeDeath()
         {
 
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {   // we need loot generation
                 return base.OnBeforeDeath();
             }

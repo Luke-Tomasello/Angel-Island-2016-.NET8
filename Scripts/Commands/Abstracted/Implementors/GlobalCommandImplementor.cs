@@ -52,6 +52,14 @@ namespace Server.Commands
                 if (!CheckObjectTypes(command, cond, out items, out mobiles))
                     return;
 
+                // log what we find
+                LogHelper Logger = new LogHelper("global.log", from, false);
+
+                // reset jump table
+                Mobiles.PlayerMobile pm = from as Mobiles.PlayerMobile;
+                pm.JumpIndex = 0;
+                pm.JumpList = new System.Collections.ArrayList();
+
                 ArrayList list = new ArrayList();
 
                 if (items)
@@ -59,7 +67,11 @@ namespace Server.Commands
                     foreach (Item item in World.Items.Values)
                     {
                         if (cond.CheckCondition(item))
+                        {
+                            pm.JumpList.Add(item);
+                            Logger.Log(LogType.Item, item);
                             list.Add(item);
+                        }
                     }
                 }
 
@@ -68,9 +80,31 @@ namespace Server.Commands
                     foreach (Mobile mob in World.Mobiles.Values)
                     {
                         if (cond.CheckCondition(mob))
+                        {
+                            pm.JumpList.Add(mob);
+                            Logger.Log(LogType.Mobile, mob);
                             list.Add(mob);
+                        }
                     }
                 }
+                
+                #region Sort
+                if (items)
+                {   // sort on most recent first
+                    List<Item> temp = pm.JumpList.Cast<Item>().ToList();
+                    temp.Sort((x, y) => { return y.Created.CompareTo(x.Created); });
+                    pm.JumpList.Clear();
+                    pm.JumpList.AddRange(temp);
+                }
+
+                if (mobiles)
+                {   // sort on most recent first
+                    List<Mobile> temp = pm.JumpList.Cast<Mobile>().ToList();
+                    temp.Sort((x, y) => { return y.Created.CompareTo(x.Created); });
+                    pm.JumpList.Clear();
+                    pm.JumpList.AddRange(temp);
+                }
+                #endregion Sort
 
                 obj = list;
             }

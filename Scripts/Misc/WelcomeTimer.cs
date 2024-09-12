@@ -82,7 +82,7 @@ namespace Server.Misc
                 m_Messages = new string[]
                 {	// Test Center
 					String.Format("Welcome to {0} Test Center{1}",
-                        Core.UOAI || Core.UOAR ? "Angel Island" : Core.UOSP ? "Siege Perilous" : Core.UOMO ? "Mortalis" : "Unknown Configuration",
+                        Core.UOAI || Core.UOREN ? "Angel Island" : Core.UOSP ? "Siege Perilous" : Core.UOMO ? "Mortalis" : "Unknown Configuration",
                         Core.UOEV ? " Event Shard." : "."),
                     "GMN core version 3.0, online since March 2004.",
                     "You are able to customize your character's stats and skills at anytime to anything you wish.  To see the commands to do this just say 'help'.",
@@ -98,7 +98,7 @@ namespace Server.Misc
             }
             else
             {
-                if (Core.UOAI || Core.UOAR)
+                if (Core.UOAI || Core.UOREN)
                     m_Messages = new string[]
                     {	// Angel Island
 						String.Format("Welcome to Angel Island{0}", Core.UOEV ? " Event Shard." : "."),
@@ -123,7 +123,7 @@ namespace Server.Misc
                         "You have been warned.",
                         "Life is only as sweet as death is painful."
                     };
-                else if (Core.UOAR)
+                else if (Core.UOREN)
                     m_Messages = new string[]
                     {	// AI Resurrection
 						String.Format("Welcome to AI Resurrection{0}", Core.UOEV ? " Event Shard." : "."),

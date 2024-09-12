@@ -95,7 +95,7 @@ namespace Server.Mobiles
 
                 Add(new GenericBuyInfo(typeof(RecallRune), 15, 10, 0x1F14, 0));
 
-                if (Core.UOAI || Core.UOAR || Core.UOMO)
+                if (Core.UOAI || Core.UOREN || Core.UOMO)
                 {
                     // the text "An Unmarked Moonstone" does not show. Figure out how Taran did the BBS Types (see GetBunchType in BaseVendor.cs)
                     Add(new GenericBuyInfo("An Unmarked Moonstone", typeof(Moonstone), 10, 100, 0xF8B, 0));
@@ -114,7 +114,7 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                if (!Core.UOAI && !Core.UOAR && !Core.UOSP && !Core.UOMO)
+                if (!Core.UOAI && !Core.UOREN && !Core.UOSP && !Core.UOMO)
                 {   // cash buyback
                     Add(typeof(Runebook), 1250);
                     Add(typeof(BlackPearl), 3);
@@ -139,7 +139,7 @@ namespace Server.Mobiles
                     Add(typeof(PigIron), 3);
                 }
 
-                if (!Core.UOAI && !Core.UOAR && !Core.UOSP && !Core.UOMO)
+                if (!Core.UOAI && !Core.UOREN && !Core.UOSP && !Core.UOMO)
                 {   // cash buyback
                     Type[] types = Loot.RegularScrollTypes;
 

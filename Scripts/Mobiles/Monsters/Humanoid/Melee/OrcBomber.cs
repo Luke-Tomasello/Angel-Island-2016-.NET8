@@ -90,7 +90,7 @@ namespace Server.Mobiles
             VirtualArmor = 30;
         }
 
-        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOAR ? true : true; } }
+        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOREN ? true : true; } }
 
         public override OppositionGroup OppositionGroup
         {
@@ -99,7 +99,7 @@ namespace Server.Mobiles
 
         public override bool IsEnemy(Mobile m, RelationshipFilter filter)
         {
-            if (!Core.UOAI && !Core.UOAR)
+            if (!Core.UOAI && !Core.UOREN)
                 if (m.Player && m.FindItemOnLayer(Layer.Helm) is OrcishKinMask)
                     return false;
 
@@ -110,13 +110,13 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (!Core.UOAI && !Core.UOAR)
+            if (!Core.UOAI && !Core.UOREN)
             {
                 Item item = aggressor.FindItemOnLayer(Layer.Helm);
 
                 if (item is OrcishKinMask)
                 {
-                    AOS.Damage(aggressor, 50, 0, 100, 0, 0, 0);
+                    AOS.Damage(aggressor, 50, 0, 100, 0, 0, 0, this);
                     item.Delete();
                     aggressor.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
                     aggressor.PlaySound(0x307);
@@ -171,7 +171,7 @@ namespace Server.Mobiles
             protected override void OnTick()
             {
                 m_Mobile.PlaySound(0x11D);
-                AOS.Damage(m_Mobile, m_From, Utility.RandomMinMax(10, 20), 0, 100, 0, 0, 0);
+                AOS.Damage(m_Mobile, m_From, Utility.RandomMinMax(10, 20), 0, 100, 0, 0, 0, source_weapon: this);
             }
         }
 
@@ -182,7 +182,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOAR)
+            if (Core.UOAI || Core.UOREN)
             {
                 PackItem(new SulfurousAsh(Utility.RandomMinMax(6, 10)));
                 PackItem(new MandrakeRoot(Utility.RandomMinMax(6, 10)));
