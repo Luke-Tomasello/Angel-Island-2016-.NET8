@@ -610,7 +610,7 @@ namespace Server.Items
             {
                 Item item;
 
-                if (Core.AOS)
+                if (Core.RuleSets.AOSRules())
                     item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
                 else
                     item = Loot.RandomArmorOrShieldOrWeapon();
@@ -619,7 +619,7 @@ namespace Server.Items
                 {
                     BaseWeapon weapon = (BaseWeapon)item;
 
-                    if (Core.AOS)
+                    if (Core.RuleSets.AOSRules())
                     {
                         int attributeCount;
                         int min, max;
@@ -641,7 +641,7 @@ namespace Server.Items
                 {
                     BaseArmor armor = (BaseArmor)item;
 
-                    if (Core.AOS)
+                    if (Core.RuleSets.AOSRules())
                     {
                         int attributeCount;
                         int min, max;
@@ -662,7 +662,7 @@ namespace Server.Items
                 {
                     BaseHat hat = (BaseHat)item;
 
-                    if (Core.AOS)
+                    if (Core.RuleSets.AOSRules())
                     {
                         int attributeCount;
                         int min, max;

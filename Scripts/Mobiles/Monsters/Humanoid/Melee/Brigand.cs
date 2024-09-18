@@ -75,7 +75,7 @@ namespace Server.Mobiles
             IOBAlignment = IOBAlignment.Brigand;
             ControlSlots = 2;
 
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 SetStr(96, 115);
                 SetDex(86, 105);
@@ -118,10 +118,10 @@ namespace Server.Mobiles
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ShowFameTitle { get { return false; } }
-        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOREN ? true : false; } }
+        public override bool CanRummageCorpses { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? true : false; } }
 
-        public override bool CanBandage { get { return Core.UOAI || Core.UOREN ? true : base.CanBandage; } }
-        public override TimeSpan BandageDelay { get { return Core.UOAI || Core.UOREN ? TimeSpan.FromSeconds(Utility.RandomMinMax(10, 13)) : base.BandageDelay; } }
+        public override bool CanBandage { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? true : base.CanBandage; } }
+        public override TimeSpan BandageDelay { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? TimeSpan.FromSeconds(Utility.RandomMinMax(10, 13)) : base.BandageDelay; } }
 
         public Brigand(Serial serial)
             : base(serial)
@@ -173,7 +173,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 PackGold(100, 150);
 
@@ -193,7 +193,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // http://web.archive.org/web/20020207053514/uo.stratics.com/hunters/brigand.shtml
                     // 100 - 200 Gold, Clothing
 

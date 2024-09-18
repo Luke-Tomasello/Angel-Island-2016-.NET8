@@ -159,7 +159,7 @@ namespace Server.Items
 
         public static TimeSpan Scale(Mobile m, TimeSpan v)
         {
-            if (!Core.AOS)
+            if (!Core.RuleSets.AOSRules())
                 return v;
 
             double scalar = 1.0 + (0.01 * AosAttributes.GetValue(m, AosAttribute.EnhancePotions));
@@ -169,7 +169,7 @@ namespace Server.Items
 
         public static double Scale(Mobile m, double v)
         {
-            if (!Core.AOS)
+            if (!Core.RuleSets.AOSRules())
                 return v;
 
             double scalar = 1.0 + (0.01 * AosAttributes.GetValue(m, AosAttribute.EnhancePotions));
@@ -179,7 +179,7 @@ namespace Server.Items
 
         public static int Scale(Mobile m, int v)
         {
-            if (!Core.AOS)
+            if (!Core.RuleSets.AOSRules())
                 return v;
 
             return AOS.Scale(v, 100 + AosAttributes.GetValue(m, AosAttribute.EnhancePotions));
@@ -195,7 +195,7 @@ namespace Server.Items
 
                 // Publish 15
                 // You will now be able to make potions directly into a potion keg.
-                if (pack != null && (Core.UOAI || Core.UOREN || Core.UOMO || PublishInfo.Publish >= 15))
+                if (pack != null && (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() || Core.RuleSets.MortalisRules() || PublishInfo.Publish >= 15))
                 {
                     List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();
 

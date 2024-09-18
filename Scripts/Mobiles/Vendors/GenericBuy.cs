@@ -258,7 +258,7 @@ namespace Server.Mobiles
 
                 // adjust for inflation (siege)
                 // Question(11) on the boards .. what's the formula?
-                if (!Core.UOAI && !Core.UOREN && !Core.UOMO && PublishInfo.Publish < 11)
+                if (!Core.RuleSets.AngelIslandRules() && !Core.RuleSets.RenaissanceRules() && !Core.RuleSets.MortalisRules() && PublishInfo.Publish < 11)
                 {
                     double delta = (double)(m_RestockAmount - m_Amount);
                     double percent = ((delta / m_RestockAmount) * 100.00) / 100;
@@ -422,7 +422,7 @@ namespace Server.Mobiles
             }
             m_Price = price;
 
-            if (Core.UOSP)
+            if (Core.RuleSets.SiegeRules())
                 m_Price = GenericBuyInfo.ComputeSiegeMarkup(m_Price);
 
             m_Amount = amount;
@@ -452,7 +452,7 @@ namespace Server.Mobiles
 
         public GenericBuyInfo(Type type)
         {
-            if (!Core.UOSP)
+            if (!Core.RuleSets.SiegeRules())
             {
                 if (!ResourcePool.IsPooledResource(type))
                     throw new Exception(type.FullName + " is not a pooled resource.");
@@ -529,7 +529,7 @@ namespace Server.Mobiles
         public static int ComputeSiegeMarkup(int price)
         {
             int total = 0;
-            if (Core.UOSP)
+            if (Core.RuleSets.SiegeRules())
             {
                 // houses are 10x the price for siege from 13.6 on, just * 3 before that
                 // http://www.uoguide.com/Publish_13.6_(Siege_Perilous_Shards_Only)

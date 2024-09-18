@@ -105,7 +105,7 @@ namespace Server.Mobiles
         }
 
         public override bool AlwaysMurderer { get { return true; } }
-        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOREN ? true : true; } }
+        public override bool CanRummageCorpses { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? true : true; } }
         public override int Meat { get { return 1; } }
 
         public JukaLord(Serial serial)
@@ -115,7 +115,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 PackItem(new Arrow(Utility.RandomMinMax(25, 35)));
                 PackItem(new Arrow(Utility.RandomMinMax(25, 35)));
@@ -128,7 +128,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // no LBR
                     if (Spawning)
                     {

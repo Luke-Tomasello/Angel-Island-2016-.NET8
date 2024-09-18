@@ -508,10 +508,10 @@ namespace Server
 
         public static BaseWeapon RandomRangedWeapon(bool inTokuno)
         {
-            /*if (Core.SE && inTokuno)
+            /*if (Core.RuleSets.SERules() && inTokuno)
 				return Construct(m_SERangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;
 
-			if (Core.AOS)
+			if (Core.RuleSets.AOSRules())
 				return Construct(m_AosRangedWeaponTypes, m_RangedWeaponTypes) as BaseWeapon;*/
 
             return Construct(m_RangedWeaponTypes) as BaseWeapon;
@@ -519,7 +519,7 @@ namespace Server
 
         public static BaseWeapon RandomWeapon()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_AosWeaponTypes, m_WeaponTypes) as BaseWeapon;
 
             return Construct(m_WeaponTypes) as BaseWeapon;
@@ -527,7 +527,7 @@ namespace Server
 
         public static Item RandomWeaponOrJewelry()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
 
             return Construct(m_WeaponTypes, m_JewelryTypes);
@@ -560,7 +560,7 @@ namespace Server
 
         public static Item RandomArmorOrShieldOrWeapon()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_AosWeaponTypes, m_WeaponTypes, m_ArmorTypes, m_ShieldTypes);
 
             return Construct(m_WeaponTypes, m_ArmorTypes, m_ShieldTypes);
@@ -568,7 +568,7 @@ namespace Server
 
         public static Item RandomArmorOrWeapon()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_AosWeaponTypes, m_WeaponTypes, m_ArmorTypes);
 
             return Construct(m_WeaponTypes, m_ArmorTypes);
@@ -576,7 +576,7 @@ namespace Server
 
         public static Item RandomArmorOrShieldOrWeaponOrJewelry()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_AosWeaponTypes, m_WeaponTypes, m_ArmorTypes, m_ShieldTypes, m_JewelryTypes);
 
             return Construct(m_WeaponTypes, m_ArmorTypes, m_ShieldTypes, m_JewelryTypes);
@@ -604,7 +604,7 @@ namespace Server
 
         public static Item RandomPossibleReagent()
         {
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
                 return Construct(m_RegTypes, m_NecroRegTypes);
 
             return Construct(m_RegTypes);

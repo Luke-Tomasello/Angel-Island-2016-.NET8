@@ -159,11 +159,11 @@ namespace Server.Items
             }
         }
 
-        public override string OldArticle
+        public override Article OldArticle
         {
             get
             {
-                return "an";
+                return Article.An;
             }
         }
 

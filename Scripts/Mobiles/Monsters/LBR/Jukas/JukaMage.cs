@@ -91,7 +91,7 @@ namespace Server.Mobiles
         }
 
         public override bool AlwaysMurderer { get { return true; } }
-        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOREN ? true : true; } }
+        public override bool CanRummageCorpses { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? true : true; } }
         public override int Meat { get { return 1; } }
 
         private DateTime m_NextAbilityTime;
@@ -193,7 +193,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 Container bag = new Bag();
 
@@ -222,7 +222,7 @@ namespace Server.Mobiles
             else
             {
 
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // no LBR
                     if (Spawning)
                     {

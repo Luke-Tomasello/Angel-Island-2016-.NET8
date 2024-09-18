@@ -245,7 +245,7 @@ namespace Server.Multis
         public override void OnDoubleClick(Mobile m)
         {
             // housing inheritance - from one character to the next (of kin)
-            if (Core.UOMO)
+            if (Core.RuleSets.MortalisRules())
             {
                 BaseHouse house = m_Structure;
                 if (house != null && (house.Owner == null || house.Owner.Deleted))
@@ -271,7 +271,7 @@ namespace Server.Multis
                 {
                     m.SendLocalizedMessage(501293); // Welcome back to the house, friend!
 
-                    if (Core.UOSP) //refresh house
+                    if (Core.RuleSets.SiegeRules()) //refresh house
                     {
                         double dms = m_Structure.DecayMinutesStored;
                         m_Structure.Refresh();

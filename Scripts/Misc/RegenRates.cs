@@ -59,7 +59,7 @@ namespace Server.Misc
 			*/
             Mobile.ManaRegenRateHandler = new RegenRateHandler(Mobile_ManaRegenRate);
             /*
-						if ( Core.AOS )
+						if ( Core.RuleSets.AOSRules() )
 						{
 							Mobile.StamRegenRateHandler = new RegenRateHandler( Mobile_StamRegenRate );
 							Mobile.HitsRegenRateHandler = new RegenRateHandler( Mobile_HitsRegenRate );
@@ -159,7 +159,7 @@ namespace Server.Misc
             double rate;
             double armorPenalty = GetArmorOffset(from);
 
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
             {
                 double medPoints = from.Int + (from.Skills[SkillName.Meditation].Value * 3);
 

@@ -180,7 +180,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (!Core.UOAI && !Core.UOREN)
+            if (!Core.RuleSets.AngelIslandRules() && !Core.RuleSets.RenaissanceRules())
             {
                 AddLoot(LootPack.SuperBoss, 2);
                 AddLoot(LootPack.Meager);

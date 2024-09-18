@@ -246,7 +246,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 // if it's being announced, it's better loot because more risk
                 if (Announce == true)
@@ -283,7 +283,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // ai special
                     if (Spawning)
                     {

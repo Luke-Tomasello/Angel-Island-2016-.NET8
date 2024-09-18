@@ -295,7 +295,7 @@ namespace Server.Engines.BulkOrders
 
             int parts = Entries.Length;
 
-            if (Core.AOS)
+            if (Core.RuleSets.AOSRules())
             {
                 if (parts <= 4)
                 {

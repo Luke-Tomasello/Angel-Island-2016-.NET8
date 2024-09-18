@@ -56,11 +56,11 @@ namespace Server.Items
             }
         }
 
-        public override string OldArticle
+        public override Article OldArticle
         {
             get
             {
-                return "a";
+                return Article.A;
             }
         }
 

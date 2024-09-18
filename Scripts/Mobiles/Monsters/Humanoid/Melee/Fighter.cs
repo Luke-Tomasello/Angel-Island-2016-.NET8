@@ -135,7 +135,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 PackGold(100, 150);
 
@@ -155,7 +155,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // ai special
                     if (Spawning)
                     {

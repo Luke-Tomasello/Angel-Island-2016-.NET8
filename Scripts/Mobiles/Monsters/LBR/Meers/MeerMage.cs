@@ -68,8 +68,8 @@ namespace Server.Mobiles
         }
 
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool CanRummageCorpses { get { return Core.UOAI || Core.UOREN ? true : true; } }
-        public override int TreasureMapLevel { get { return Core.UOAI || Core.UOREN ? 3 : 0; } }
+        public override bool CanRummageCorpses { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? true : true; } }
+        public override int TreasureMapLevel { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? 3 : 0; } }
 
         public override bool InitialInnocent { get { return true; } }
 
@@ -163,7 +163,7 @@ namespace Server.Mobiles
                     m.PlaySound(0x00E);
                     m.PlaySound(0x1BC);
 
-                    AOS.Damage(m, this, Utility.RandomMinMax(30, 40) - (Core.AOS ? 0 : 10), 100, 0, 0, 0, 0, source_weapon: this);
+                    AOS.Damage(m, this, Utility.RandomMinMax(30, 40) - (Core.RuleSets.AOSRules() ? 0 : 10), 100, 0, 0, 0, 0, source_weapon: this);
 
                     states[1] = count + 1;
 
@@ -180,7 +180,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 PackGold(200, 400);
 
@@ -189,7 +189,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // no LBR
                     if (Spawning)
                     {

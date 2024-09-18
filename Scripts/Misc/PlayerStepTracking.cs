@@ -38,7 +38,7 @@ namespace Server.Misc
     {
         public static void Initialize()
         {
-            if (!Core.UOSP) //we don't do this for SP.
+            if (!Core.RuleSets.SiegeRules()) //we don't do this for SP.
             {
                 EventSink.Movement += new MovementEventHandler(EventSink_Movement);
             }
@@ -47,7 +47,7 @@ namespace Server.Misc
 
         public static void EventSink_Movement(MovementEventArgs e)
         {
-            if (!Core.UOSP) //we don't do this for SP.
+            if (!Core.RuleSets.SiegeRules()) //we don't do this for SP.
             {
                 Mobile from = e.Mobile;
 

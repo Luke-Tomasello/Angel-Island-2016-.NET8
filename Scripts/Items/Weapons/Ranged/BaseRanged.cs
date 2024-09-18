@@ -106,7 +106,7 @@ namespace Server.Items
 
             // Make sure we've been standing still for the standing delay (originally was: one second)
             if (DateTime.UtcNow > (attacker.LastMoveTime + TimeSpan.FromSeconds(CoreAI.StandingDelay))
-                || (Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
+                || (Core.RuleSets.AOSRules() && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
             {
                 if (attacker.HarmfulCheck(defender))
                 {
@@ -122,7 +122,7 @@ namespace Server.Items
                             Ammo = (Item)pack.FindItemByType(AmmoType, true);
                             if (Ammo != null)
                             {
-                                if (Core.UOSP || Core.UOMO)
+                                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                                 {
                                 }
                                 else
@@ -194,7 +194,7 @@ namespace Server.Items
                             OnMiss(attacker, defender);
                     }
 
-                    if (Core.UOAI || Core.UOREN)
+                    if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
                     {   // set weapon to be unpoisoned
                         Poison = null;
                         PoisonCharges = 0;
@@ -216,7 +216,7 @@ namespace Server.Items
 
             base.OnHit(attacker, defender);
 
-            if (!Core.AOS && Poison != null && PoisonCharges > 0)
+            if (!Core.RuleSets.AOSRules() && Poison != null && PoisonCharges > 0)
             {
                 --PoisonCharges;
                 // Below is 50% chance to poison, need to change this code
@@ -237,7 +237,7 @@ namespace Server.Items
                     ISpell i = from.Spell;
                     Spell s = (Spell)i;
 
-                    if (!Core.UOSP) //don't bother checking if we're IslandSiege
+                    if (!Core.RuleSets.SiegeRules()) //don't bother checking if we're IslandSiege
                     {
                         PoisonCloth pCloth = (PoisonCloth)from.Backpack.FindItemByType(typeof(Server.Items.PoisonCloth), false);
                         if (pCloth != null && pCloth.PoisonCharges > 0)

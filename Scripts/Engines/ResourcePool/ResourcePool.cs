@@ -859,7 +859,7 @@ namespace Server.Engines.ResourcePool
 
         public static bool IsPooledResource(Type type)
         {
-            if (Core.UOSP) return false;
+            if (Core.RuleSets.SiegeRules()) return false;
 
             if (type == null)
                 return false;

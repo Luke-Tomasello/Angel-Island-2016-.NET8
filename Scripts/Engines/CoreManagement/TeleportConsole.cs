@@ -59,7 +59,7 @@ namespace Server.Items
             }
             set
             {
-                if (Core.UOTC)
+                if (Core.RuleSets.TestCenterRules())
                 {
                     CoreAI.TeleDelay = DefaultTeleDelay;
                     CoreAI.TeleTiles = DefaultTeleTiles;
@@ -80,7 +80,7 @@ namespace Server.Items
             }
             set
             {
-                if (Core.UOTC)
+                if (Core.RuleSets.TestCenterRules())
                     CoreAI.TeleDelay = TimeSpan.FromMilliseconds(value).TotalSeconds;
                 else
                     SendMessage("This can only be used on Test Center");
@@ -95,7 +95,7 @@ namespace Server.Items
             }
             set
             {
-                if (Core.UOTC)
+                if (Core.RuleSets.TestCenterRules())
                     CoreAI.TeleTiles = value;
                 else
                     SendMessage("This can only be used on Test Center");

@@ -30,7 +30,7 @@
  *		o replace final loot with a Fists weapon with a lich's staff graphic. 
  *			The old weapon was flippable which allowed it to be flipped exposing the scepter graphic.
  *		- note: we will manually replace all of the outstanding scepters with this new one.
- *	7/24/10, adam
+ *	7/24/10, Adam
  *		Vald's Scepter cannot be equiped, so make sure the the system knows this: weapon.Layer = Layer.Invalid;
  *	3/3/10, Adam
  *		because scepters were dropped as shard birth-rares, we change the graphic of the dropped item to that of a lich's staff
@@ -89,7 +89,7 @@ namespace Server.Mobiles
         }
 
         // Auto-dispel is UOR - http://forums.uosecondage.com/viewtopic.php?f=8&t=6901
-        public override bool AutoDispel { get { return Core.UOAI || Core.UOREN ? false : PublishInfo.PublishDate >= Core.EraREN ? true : false; } }
+        public override bool AutoDispel { get { return Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() ? false : PublishInfo.PublishDate >= Core.EraREN ? true : false; } }
 
         public override void InitBody()
         {
@@ -323,7 +323,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Core.UOAI || Core.UOREN)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules())
             {
                 Item blood = new BloodVial();
                 blood.Name = "blood of " + this.Name;
@@ -438,7 +438,7 @@ namespace Server.Mobiles
             }
             else
             {
-                if (Core.UOSP || Core.UOMO)
+                if (Core.RuleSets.SiegeRules() || Core.RuleSets.MortalisRules())
                 {   // ai special
                     if (Spawning)
                     {

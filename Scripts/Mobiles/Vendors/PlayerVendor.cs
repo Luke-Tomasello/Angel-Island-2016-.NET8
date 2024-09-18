@@ -21,7 +21,9 @@
 
 /* Scripts/Mobiles/Vendors/PlayerVendor.cs
  * CHANGELOG
- *	8/27/11, adam
+ *  9/16/2024, Adam (Instances)
+ *      Add an Instances table for use in CronTasks CustomHousingVendorRestock
+ *	8/27/11, Adam
  *		Add special handling for items with our custom Cliloc entries as we cannot pass those along to the client. I.e.,
  * 		if (item.LabelNumber < 500000 && Text.Cliloc.Lookup.ContainsKey(item.LabelNumber))					
  * 			name = Text.Cliloc.Lookup[item.LabelNumber];	// to the client it will look as if we simply had a 'name'
@@ -300,7 +302,9 @@ namespace Server.Mobiles
     public enum PricingModel { ModifiedOSI, ClassicOSI, Commission };
 
     public class PlayerVendor : Mobile
-    {
+    {   // our cron job wants to know about these guys (custom housing vendors)
+        public static List<PlayerVendor> Instances = new List<PlayerVendor>();
+
         private Hashtable m_SellItems;
         private Mobile m_Owner;
         private int m_BankAccount;
@@ -361,6 +365,8 @@ namespace Server.Mobiles
             UpdateClothes(this);
             m_PayTimer = new PayTimer(this);
             m_PayTimer.Start();
+
+            Instances.Add(this);
         }
 
         public override DeathMoveResult GetInventoryMoveResultFor(Item item)
@@ -371,8 +377,13 @@ namespace Server.Mobiles
         public PlayerVendor(Serial serial)
             : base(serial)
         {
+            Instances.Add(this);
         }
-
+        public override void Delete()
+        {
+            Instances.Remove(this);
+            base.Delete();
+        }
 
         public void UpdateClothes(object obj)
         {

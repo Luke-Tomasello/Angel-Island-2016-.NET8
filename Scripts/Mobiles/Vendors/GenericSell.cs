@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
         public void Add(Type type, int price)
         {
-            if (!Core.UOSP)
+            if (!Core.RuleSets.SiegeRules())
             {
                 m_Table[type] = price;
                 m_MyTypes.Add(type);
@@ -53,7 +53,7 @@ namespace Server.Mobiles
 
         public void Add(Type type)
         {
-            if (Core.UOAI || Core.UOREN || Core.UOMO)
+            if (Core.RuleSets.AngelIslandRules() || Core.RuleSets.RenaissanceRules() || Core.RuleSets.MortalisRules())
             {   // these shards support the balanced buyback system
                 if (ResourcePool.IsPooledResource(type))
                 {
