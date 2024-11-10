@@ -108,7 +108,8 @@
  */
 
 using Server.Accounting;				// Emailer
-using Server.Commands;			// log helper
+using Server.Commands;          // log helper
+using Server.Diagnostics;
 using Server.Engines.ChampionSpawn;		// champs
 using Server.Guilds;
 using Server.Items;
@@ -119,7 +120,6 @@ using Server.Network;
 using Server.Regions;
 using Server.SMTP;								// new SMTP engine
 using System.Collections;
-using System.Xml.Linq;
 //using JetBrains.dotTrace.Api;			// profiler
 
 namespace Server.Engines.CronScheduler
@@ -141,6 +141,9 @@ namespace Server.Engines.CronScheduler
 
             // Vendor Restock - every 30 minutes
             Cron.Register(new CVendorRestock().VendorRestock, "*/30 * * * *");
+
+            // Nav Beacon Adjust - every 30 minutes
+            Cron.Register(new CNavBeaconAdjust().NavBeaconAdjust, "*/30 * * * *");
 
             // Custom Housing Vendor Restock - daily (8:? AM)
             Cron.Register(new CCustomHousingVendorRestock().CustomHousingVendorRestock, "? 8 * * *");
@@ -498,6 +501,61 @@ namespace Server.Engines.CronScheduler
     }
     #endregion VendorRestock
 
+    #region Nav Beacon Adjust
+    // adjust nav beacons if needed
+    class CNavBeaconAdjust
+    {
+        public void NavBeaconAdjust()
+        {
+            System.Console.WriteLine("Navigation beacon placement check started ... ");
+            Utility.TimeCheck tc = new Utility.TimeCheck();
+            int adjusted = 0;
+            tc.Start();
+            int vendorsChecked = NavBeaconAdjustWorker(ref adjusted);
+            tc.End();
+            System.Console.WriteLine("checked {0} beacons, {1} adjusted in {2}", vendorsChecked, adjusted, tc.TimeTaken);
+        }
+
+        private int NavBeaconAdjustWorker(ref int adjusted)
+        {
+            int iChecked = 0;
+
+            foreach (Item item in World.Items.Values)
+                //if (false)
+                if (item is NavigationBeacon nb)
+                {
+                    iChecked++;
+                    if (Multis.BaseHouse.FindHouseAt(nb) != null)
+                    {
+                        adjusted++;
+                        ;
+                        ;
+                        Multis.BaseHouse bh = Multis.BaseHouse.FindHouseAt(nb) as Multis.BaseHouse;
+                        ;
+                        int maxWidth = 0;
+                        int maxHeight = 0;
+                        if (bh.Region is HouseRegion hr && hr.Coords != null)
+                            foreach(object o in hr.Coords)
+                                if (o is Rectangle2D r2d)
+                                {
+                                    maxWidth += r2d.Width;
+                                    maxHeight += r2d.Height;
+                                }
+                        int homeRange = Math.Max(maxWidth,maxHeight);
+                        List<Point3D> list = Spawner.GetAllSpawnableLocations(nb.Map, nb.Location, homeRange, nb, Spawner.SpawnerFlags.SpawnFar);
+
+                        // get the point closest to where we were
+                        list = list.OrderBy(x => Utility.GetDistanceToSqrt(nb, x)).ToList();
+                        nb.MoveToWorld(list[0], nb.Map);
+                        ;
+                    }
+                }
+
+            return iChecked;
+        }
+    }
+    #endregion Nav Beacon Adjust
+
     #region CustomHousingVendorRestock
     // restock the vendors
     class CCustomHousingVendorRestock
@@ -544,7 +602,7 @@ namespace Server.Engines.CronScheduler
                                         string article;
                                         if (Utility.StartsWithVowel(deed.Name)) article = "an"; else article = "a";
                                         deed.Name = "a deed to" + " " + article + " " + description;
-                                        
+
                                         if (pv.OnDragDrop(World.GetSystemAcct(), deed) == false)
                                         {
                                             Utility.Monitor.WriteLine("Unable to restock {0}", ConsoleColor.Red, pv);

@@ -45,7 +45,7 @@
  *		Added TC checks to ensure none of this shit runs on Prod.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Collections;
 
 namespace Server.PathAlgorithms.Sector

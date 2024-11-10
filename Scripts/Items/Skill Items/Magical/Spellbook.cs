@@ -31,6 +31,7 @@
  */
 
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines.Craft;
 using Server.Network;
 using Server.Spells;

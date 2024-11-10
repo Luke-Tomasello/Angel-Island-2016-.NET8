@@ -35,7 +35,6 @@
  */
 #if true
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Server.Network

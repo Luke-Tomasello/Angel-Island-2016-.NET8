@@ -119,7 +119,7 @@
  */
 
 using Server;
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Items;
 using Server.Misc;
@@ -650,7 +650,7 @@ namespace Server.Mobiles
             {
                 Hashtable newsellitems = new Hashtable();
 
-                Server.Commands.LogHelper lh = null;
+                LogHelper lh = null;
 
                 foreach (VendorItem vi in m_SellItems.Values)
                 {
@@ -658,7 +658,7 @@ namespace Server.Mobiles
                     {
                         if (lh == null)
                         {
-                            lh = new Server.Commands.LogHelper("ValidateSellItems.log");
+                            lh = new LogHelper("ValidateSellItems.log");
                         }
 
                         System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -677,7 +677,7 @@ namespace Server.Mobiles
                         {
                             if (lh == null)
                             {
-                                lh = new Server.Commands.LogHelper("ValidateSellItems.log");
+                                lh = new LogHelper("ValidateSellItems.log");
                             }
 
                             System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -701,7 +701,7 @@ namespace Server.Mobiles
                             {
                                 if (lh == null)
                                 {
-                                    lh = new Server.Commands.LogHelper("ValidateSellItems.log");
+                                    lh = new LogHelper("ValidateSellItems.log");
                                 }
 
                                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -726,7 +726,7 @@ namespace Server.Mobiles
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
 
             return invalid;

@@ -48,7 +48,7 @@
  *		Changed m_Delay to 30 minutes
 */
 
-using Server.Commands;
+using Server.Diagnostics;
 
 namespace Server.Misc
 {

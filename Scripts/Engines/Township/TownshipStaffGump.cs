@@ -36,6 +36,7 @@
  *		Enhancements for usability.
  */
 
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
@@ -107,7 +108,7 @@ namespace Server.Township
                     }
                     catch (Exception cpe)
                     {
-                        Server.Commands.LogHelper.LogException(cpe);
+                        LogHelper.LogException(cpe);
                     }
 
                     AddHtml(20, 50, 300, 35, string.Format("{0} of {1}", TownshipStone.GetTownshipSizeDesc(thisStone.ActivityLevel), thisStone.GuildName), false, false);
@@ -143,7 +144,7 @@ namespace Server.Township
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
         }
 
@@ -203,13 +204,13 @@ namespace Server.Township
                     }
                     catch (Exception ex)
                     {
-                        Server.Commands.LogHelper.LogException(ex, "inner");
+                        LogHelper.LogException(ex, "inner");
                     }
                 }
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
         }
 
@@ -266,7 +267,7 @@ namespace Server.Township
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
         }
 

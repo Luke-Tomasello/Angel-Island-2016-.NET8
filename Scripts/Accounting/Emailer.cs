@@ -48,7 +48,7 @@
  *		Initial Version.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.SMTP;					// new SMTP engine
 using System.Collections;	// ArrayList
 

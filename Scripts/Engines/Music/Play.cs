@@ -36,6 +36,7 @@
  *	07/30/06, Rhiannon
  *		Initial creation.
  */
+using Server.Diagnostics;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -137,7 +138,7 @@ namespace Server.Commands
                     }
                     catch (Exception ex)
                     {
-                        Server.Commands.LogHelper.LogException(ex);
+                        LogHelper.LogException(ex);
                     }
 
                     PlayList.Enqueue(d); // If so, add it to the queue as a double.
@@ -271,7 +272,7 @@ namespace Server.Commands
                     }
                     catch (Exception ex)
                     {
-                        Server.Commands.LogHelper.LogException(ex);
+                        LogHelper.LogException(ex);
                     }
                 }
             }

@@ -36,7 +36,7 @@
  *	5/5/04 Creation by smerX
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;

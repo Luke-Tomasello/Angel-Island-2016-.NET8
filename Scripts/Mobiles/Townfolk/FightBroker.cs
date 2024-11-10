@@ -67,7 +67,7 @@
  *		Initial Version.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines;				// Capture the Flag
 using Server.Gumps;
 using Server.Items;

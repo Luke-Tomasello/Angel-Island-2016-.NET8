@@ -25,6 +25,7 @@
  *		Merged in 1.0RC0 code.
  */
 
+using Server.Diagnostics;
 using System.Collections;
 
 namespace Server.Commands
@@ -87,7 +88,7 @@ namespace Server.Commands
                         }
                     }
                 }
-                
+
                 #region Sort
                 if (items)
                 {   // sort on most recent first

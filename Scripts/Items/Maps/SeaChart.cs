@@ -33,7 +33,7 @@
  *		Created.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Mobiles;
 using Server.Targeting;
 
@@ -341,7 +341,7 @@ namespace Server.Items
                             // okay, we have what looks like a good map center and first pin
                             // we must have land within 64 tiles
                             Point3D wetLoc = new Point3D(mx, my, Map.Felucca.GetAverageZ(mx, my));
-                            Point3D dryLoc = Spawner.GetSpawnPosition(Map.Felucca, wetLoc, 64, false, null);
+                            Point3D dryLoc = Spawner.GetSpawnPosition(Map.Felucca, wetLoc, 64, null);
                             if (wetLoc == dryLoc)
                             {   // spawner failed to find a good location
                                 noLand++;
@@ -397,7 +397,7 @@ namespace Server.Items
                                 for (int retry = 0; retry < 100; retry++)
                                 {
                                     // get a new pin location 
-                                    newPinLoc = Spawner.GetSpawnPosition(Map.Felucca, lastPinLoc, 200, false, false, Spawner.SpawnFlags.SpawnFar, fish);
+                                    newPinLoc = Spawner.GetSpawnPosition(Map.Felucca, lastPinLoc, 200, fish, Spawner.SpawnerFlags.SpawnFar);
                                     if (newPinLoc == lastPinLoc)
                                         continue;
 

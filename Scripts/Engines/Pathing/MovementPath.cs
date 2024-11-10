@@ -24,7 +24,7 @@
  * 12/05/05, Kit
  *		Added 2nd MovementPath() for use of navStar system.
  */
-using Server.Commands;
+using Server.Diagnostics;
 using Server.PathAlgorithms;
 using Server.PathAlgorithms.FastAStar;
 using Server.PathAlgorithms.NavStar;
@@ -53,8 +53,16 @@ namespace Server
 
         public static void Path_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Path_OnTarget));
-            e.Mobile.SendMessage("Target a location and a path will be drawn there.");
+            if (string.IsNullOrEmpty(e.ArgString))
+            {
+                e.Mobile.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Path_OnTarget));
+                e.Mobile.SendMessage("Target a location and a path will be drawn there.");
+            }
+            else
+            {
+                Point3D px = new Point3D();
+                Path_OnTarget(e.Mobile, Point3D.Parse(e.ArgString));
+            }
         }
 
         private static void Path(Mobile from, IPoint3D p, PathAlgorithm alg, string name, int zOffset)
@@ -142,7 +150,7 @@ namespace Server
 
         private static PathAlgorithm m_OverrideAlgorithm;
 
-        public PathAlgorithm OverrideAlgorithm
+        public static PathAlgorithm OverrideAlgorithm
         {
             get { return m_OverrideAlgorithm; }
             set { m_OverrideAlgorithm = value; }

@@ -40,7 +40,7 @@
  *		Total rewrite, moonstones now can be marked, and create gates for players with no magery.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Multis;
 using Server.Network;
 using Server.Spells;

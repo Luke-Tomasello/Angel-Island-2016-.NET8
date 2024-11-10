@@ -36,6 +36,7 @@
  *      InitialVersion
  */
 
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Mobiles;
 
@@ -62,11 +63,19 @@ namespace Server.RTT
 
                     //player did not answer RTT gump - timeout, assume we've got an AFK macroer - auto [macroer him!
                     PJUM.MacroerCommand.ReportAsMacroer(null, m_from as PlayerMobile);
+
+                    // notify staff
+                    if (CoreAI.IsDynamicFeatureSet(CoreAI.FeatureBits.RTTNotifyEnabled))
+                    {
+                        Server.Commands.CommandHandlers.BroadcastMessage(AccessLevel.Administrator,
+                        0x482,
+                        String.Format("{0}({1}) failed the RTT.", m_from.Name, m_from.Serial));
+                    }
                 }
             }
             catch (Exception exc)
             {
-                Server.Commands.LogHelper.LogException(exc);
+                LogHelper.LogException(exc);
             }
         }
 
@@ -133,8 +142,8 @@ namespace Server.RTT
             }
 
             // record the fact that the RTT test is being taken
-            Server.Commands.LogHelper lh = new Server.Commands.LogHelper("RTT.log", false, true);
-            lh.Log(Server.Commands.LogType.Mobile, m_Mobile, String.Format("({0}) RTT Launched.", strSkill));
+            LogHelper lh = new LogHelper("RTT.log", false, true);
+            lh.Log(LogType.Mobile, m_Mobile, String.Format("({0}) RTT Launched.", strSkill));
             lh.Finish();
 
             //This will call any child-gump's SetupGump and set it up like the child wants.
@@ -168,8 +177,8 @@ namespace Server.RTT
                 if (button == m_CorrectResponse + m_CorrectResponseOffset)
                 {
                     // record answer
-                    Server.Commands.LogHelper lh = new Server.Commands.LogHelper("RTT.log", false, true);
-                    lh.Log(Server.Commands.LogType.Mobile, m_Mobile, string.Format("PASSED the RTT in {0} ms", diff.TotalMilliseconds));
+                    LogHelper lh = new LogHelper("RTT.log", false, true);
+                    lh.Log(LogType.Mobile, m_Mobile, string.Format("PASSED the RTT in {0} ms", diff.TotalMilliseconds));
                     lh.Finish();
 
                     m_Mobile.SendMessage("Thanks for verifying that you're at your computer.");
@@ -193,8 +202,8 @@ namespace Server.RTT
                         // Look for and record suspiciously fast answers
                         if (diff <= TimeSpan.FromSeconds(3.0))
                         {
-                            Server.Commands.LogHelper lh2 = new Server.Commands.LogHelper("RTTAlert.log", false, true);
-                            lh2.Log(Server.Commands.LogType.Mobile, m_Mobile, string.Format("{0} ms", diff.TotalMilliseconds));
+                            LogHelper lh2 = new LogHelper("RTTAlert.log", false, true);
+                            lh2.Log(LogType.Mobile, m_Mobile, string.Format("{0} ms", diff.TotalMilliseconds));
                             lh2.Finish();
                         }
                     }
@@ -202,8 +211,8 @@ namespace Server.RTT
                 else
                 {
                     // record answer
-                    Server.Commands.LogHelper lh = new Server.Commands.LogHelper("RTT.log", false, true);
-                    lh.Log(Server.Commands.LogType.Mobile, m_Mobile, string.Format("FAILED the RTT in {0} ms", diff.TotalMilliseconds));
+                    LogHelper lh = new LogHelper("RTT.log", false, true);
+                    lh.Log(LogType.Mobile, m_Mobile, string.Format("FAILED the RTT in {0} ms", diff.TotalMilliseconds));
                     lh.Finish();
 
                     m_Mobile.SendMessage("You have failed the AFK test.");
@@ -219,7 +228,7 @@ namespace Server.RTT
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
         }
     }

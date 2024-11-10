@@ -41,7 +41,7 @@
  *		First time checkin
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Mobiles;	// for Spawner. Shouldn't a Spawner be in the 'item' namespace?
 
 namespace Server.Engines.OverlandSpawner
@@ -78,8 +78,8 @@ namespace Server.Engines.OverlandSpawner
                 bc.Home = spawner.Location;
                 bc.Spawner = spawner;
 
-                //if we have a navdestination as soon as we spawn start on it
-                if (bc.NavDestination != NavDestinations.None)
+                //if we have a nav destination as soon as we spawn start on it
+                if (!string.IsNullOrEmpty(bc.NavDestination))
                     bc.AIObject.Think();
 
                 /////////////////////////////

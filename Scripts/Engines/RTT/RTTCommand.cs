@@ -26,6 +26,7 @@
  *      Now takes optional 'mode' argument.
  */
 
+using Server.Diagnostics;
 using Server.Mobiles;
 using Server.Targeting;
 
@@ -73,7 +74,7 @@ namespace Server.RTT
             }
             catch (Exception ex)
             {
-                Server.Commands.LogHelper.LogException(ex);
+                LogHelper.LogException(ex);
             }
         }
 

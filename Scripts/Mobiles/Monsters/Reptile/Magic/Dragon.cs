@@ -74,7 +74,7 @@
  *		Merged in 1.0RC0 code.
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Items;
 using Server.Misc;
 using Server.Multis;

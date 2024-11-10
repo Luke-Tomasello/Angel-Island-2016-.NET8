@@ -89,6 +89,7 @@
  */
 
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
@@ -114,7 +115,7 @@ namespace Server.Items
                     if (Movable == false && this.RootParent as Mobile == null && bRecord)
                     {
                         string text = String.Format("Looting: Non friend of house lifting item {0} from {1}.", item.Serial, this.Serial);
-                        LogHelper.TrackIt(from, text, true);
+                        RecordCheater.TrackIt(from, text, true);
                     }
                 }
             }

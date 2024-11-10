@@ -61,6 +61,7 @@
  *		Added dials for all fees/charges and modifiers.
  */
 
+using Server.Diagnostics;
 using Server.Guilds;
 using Server.Gumps;
 using Server.Mobiles;
@@ -319,7 +320,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
 
             return iReturn;
@@ -536,7 +537,7 @@ namespace Server.Items
             {
                 string message = string.Format("Township {0} is being deleted: daily charge: {1} funds: {2}",
                     this.GuildName, TotalFeePerDay, GoldHeld);
-                Server.Commands.LogHelper log = new Server.Commands.LogHelper("township.log", false);
+                LogHelper log = new LogHelper("township.log", false);
                 log.Log(message);
                 log.Finish();
                 this.Delete();
@@ -1137,7 +1138,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e, "Pix: problem with RemoveEmissary()");
+                LogHelper.LogException(e, "Pix: problem with RemoveEmissary()");
             }
         }
 

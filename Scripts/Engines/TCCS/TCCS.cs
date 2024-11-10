@@ -47,7 +47,7 @@
  *		Initial Version.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Mobiles;
 using System.Collections;
 using System.Xml;

@@ -65,7 +65,7 @@
  *		Promote to a true base class
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Items;
 using System.Collections;
 

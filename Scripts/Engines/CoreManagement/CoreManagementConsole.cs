@@ -180,7 +180,7 @@ namespace Server.Items
             : base(0x1F14)
         {
             Weight = 1.0;
-            Hue = 0x534;
+            Hue = Utility.RandomSpecialHue(GetType().FullName);
             Name = "Core Management Console";
         }
 
@@ -188,7 +188,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-        
+
         [CommandProperty(AccessLevel.Owner)]
         public bool TentAnnexation
         {
@@ -1727,6 +1727,9 @@ namespace Server.Items.Consoles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 1)
+                Hue = Utility.RandomSpecialHue(GetType().FullName);
         }
     }
 }

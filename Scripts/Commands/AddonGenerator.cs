@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 using Server;
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Items;
 using System.Collections;

@@ -453,6 +453,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_76882EDF74B54B13917631A531259C10"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_76BF0E9EA90048E58D2515B17FE4FB8D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2562,6 +2568,26 @@
             "TargetName" = "8:wizard.cfg"
             "Tag" = "8:"
             "Folder" = "8:_F337DA3F7AE44B38BD6E1A864FC9A194"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76882EDF74B54B13917631A531259C10"
+            {
+            "SourcePath" = "8:..\\Data\\Languages\\language-orc.json"
+            "TargetName" = "8:language-orc.json"
+            "Tag" = "8:"
+            "Folder" = "8:_5D9BAD235D1642D39E8529A16B4EB686"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4735,6 +4761,17 @@
                                         {
                                         }
                                     }
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_5D9BAD235D1642D39E8529A16B4EB686"
+                            {
+                            "Name" = "8:Languages"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_6CF7A49E420146FFBDBCFB55EE5C9CCF"
+                                "Folders"
+                                {
                                 }
                             }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_67354EFEDE994636990AD3597E6E08B5"

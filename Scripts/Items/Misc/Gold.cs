@@ -26,7 +26,7 @@
  *		- InvokeWealthTracker
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;			// log helper
 
 namespace Server.Items
 {

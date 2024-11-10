@@ -29,6 +29,7 @@
 
 using Server.Accounting;
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Network;
 using Server.Targeting;
 

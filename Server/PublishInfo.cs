@@ -25,8 +25,6 @@
  *  Initial version
  */
 
-using System;
-
 namespace Server
 {
     public static class PublishInfo

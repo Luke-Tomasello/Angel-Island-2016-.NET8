@@ -33,7 +33,7 @@
  *  06/08/2007, plasma
  *      Initial creation
  */
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Items;
 using System.Collections;
 

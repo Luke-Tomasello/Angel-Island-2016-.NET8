@@ -33,7 +33,6 @@ using Server.Items;
 using Server.Network;
 using Server.Text;
 using System.Collections;
-using System.Text.RegularExpressions;
 
 namespace Server.Engines.Craft
 {
@@ -265,7 +264,7 @@ namespace Server.Engines.Craft
             switch (nameNumber)
             {
                 case 1049150:       //  "LEATHER / HIDES";
-                    return new Type[] {typeof(Leather), typeof(Hides) };
+                    return new Type[] { typeof(Leather), typeof(Hides) };
                 case 1049151:       //  "SPINED LEATHER / HIDES";
                     return new Type[] { typeof(SpinedLeather), typeof(SpinedHides) };
                 case 1049152:       //  "HORNED LEATHER / HIDES";

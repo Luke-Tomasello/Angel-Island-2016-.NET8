@@ -25,6 +25,7 @@
  *		initial checkin
  */
 
+using Server.Diagnostics;
 using Server.Mobiles;
 using System.Collections;
 using System.Reflection;

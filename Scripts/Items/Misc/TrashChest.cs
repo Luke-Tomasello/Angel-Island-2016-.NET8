@@ -33,7 +33,7 @@
  *			functionality in the core.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Collections;
 
 namespace Server.Items

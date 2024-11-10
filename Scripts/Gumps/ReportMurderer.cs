@@ -54,6 +54,7 @@
  */
 
 using Server.BountySystem;
+using Server.Diagnostics;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
@@ -241,7 +242,7 @@ namespace Server.Gumps
                 }
                 catch (Exception e)
                 {
-                    Server.Commands.LogHelper.LogException(e);
+                    LogHelper.LogException(e);
                 }
 
                 m_Victim.SendGump(new ReportMurdererGump(m_Victim, m_Killers));

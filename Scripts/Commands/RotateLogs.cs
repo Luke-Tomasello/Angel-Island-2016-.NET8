@@ -27,6 +27,8 @@
  *		Initial Version
  */
 
+using Server.Diagnostics;
+
 namespace Server.Commands
 {
     public class RotateLogs

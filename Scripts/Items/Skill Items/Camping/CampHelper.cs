@@ -25,7 +25,7 @@
  *      Initial creation      
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Collections;
 using System.Xml;
 

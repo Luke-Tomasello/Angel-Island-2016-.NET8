@@ -29,7 +29,7 @@
  *		Consolidated from ResourcePool.cs
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Collections;
 
 namespace Server.Engines.ResourcePool

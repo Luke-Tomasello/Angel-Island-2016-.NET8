@@ -75,8 +75,8 @@
  *		Commented out "bool gainedPath = false;"
  */
 
-using Server.Commands;			// LogHelper
 using Server.ContextMenus;
+using Server.Diagnostics;
 using Server.Items;
 using Server.Regions;
 using System.Collections;

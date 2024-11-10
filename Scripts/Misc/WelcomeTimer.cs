@@ -59,7 +59,7 @@
  *		2. add nowmal welcome message
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Guilds;
 using Server.Items;
 

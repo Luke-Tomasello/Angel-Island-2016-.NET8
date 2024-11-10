@@ -44,7 +44,8 @@
  *		See Also: Scripts/Engines/Heartbeat/HeartbeatData.cs
  */
 
-using Server.Accounting;			// Emailer
+using Server.Accounting;            // Emailer
+using Server.Diagnostics;
 using Server.Misc;					// Test Center
 using Server.SMTP;							// new SMTP engine
 using System.Collections;

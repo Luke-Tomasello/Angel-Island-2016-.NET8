@@ -43,7 +43,7 @@
  *
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines.ChampionSpawn;
 using Server.Items;
 

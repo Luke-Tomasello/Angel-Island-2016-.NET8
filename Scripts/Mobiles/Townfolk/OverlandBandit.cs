@@ -41,7 +41,7 @@
  *		First time checkin
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 
 namespace Server.Mobiles

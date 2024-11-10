@@ -70,7 +70,7 @@
 //		* an AddStatBonus routine used by the Bless effect.
 */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines.Craft;
 using Server.Mobiles;
 using Server.Network;

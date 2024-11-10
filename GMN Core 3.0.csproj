@@ -39,7 +39,6 @@
 	  <None Remove="ZLR.VM\**" />
 	</ItemGroup>
 
-
 	<ItemGroup>
 	  <ProjectReference Include="ZLR.VM\ZLR.VM.csproj" />
 	</ItemGroup>

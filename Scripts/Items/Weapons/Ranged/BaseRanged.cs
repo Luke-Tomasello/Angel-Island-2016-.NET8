@@ -64,7 +64,7 @@
  * 		where there is a 50% chance of poisoning, same as melee weapons.
 */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;

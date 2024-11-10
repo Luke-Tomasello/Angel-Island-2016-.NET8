@@ -39,7 +39,7 @@
  *		Initial creation
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 
 namespace Server.Mobiles
 {

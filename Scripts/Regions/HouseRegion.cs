@@ -58,7 +58,7 @@
  *		Modified OnMoveInto() and OnLocationChanged() to allow GMs to enter a house that's being customized
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -231,7 +231,7 @@ namespace Server.Regions
                 }
                 catch (Exception e)
                 {
-                    Server.Commands.LogHelper.LogException(e);
+                    LogHelper.LogException(e);
                 }
             }
 

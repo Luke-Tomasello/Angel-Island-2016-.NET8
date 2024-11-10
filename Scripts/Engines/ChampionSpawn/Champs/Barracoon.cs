@@ -39,7 +39,7 @@
  *		Removed spawn of gold items in pack.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines.ChampionSpawn;
 using Server.Items;
 using Server.Spells.Fifth;

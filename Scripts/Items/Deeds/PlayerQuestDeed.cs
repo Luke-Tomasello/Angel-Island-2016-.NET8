@@ -27,7 +27,7 @@
  *		Created.
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Mobiles;
 using System.Collections;
 

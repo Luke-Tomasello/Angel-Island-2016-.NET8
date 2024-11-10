@@ -30,6 +30,7 @@
  *		Now lookouts report to allies of the township.
 */
 
+using Server.Diagnostics;
 using Server.Items;
 using Server.Multis;
 using Server.Regions;
@@ -824,7 +825,7 @@ namespace Server.Mobiles
             }
             catch (Exception ex)
             {
-                Server.Commands.LogHelper.LogException(ex);
+                LogHelper.LogException(ex);
             }
             base.OnDelete();
         }
@@ -1577,7 +1578,7 @@ namespace Server.Mobiles
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return bCanReport;
         }
@@ -1601,7 +1602,7 @@ namespace Server.Mobiles
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
         }
 
@@ -1632,7 +1633,7 @@ namespace Server.Mobiles
                                     }
                                     catch (Exception exc)
                                     {
-                                        Server.Commands.LogHelper.LogException(exc);
+                                        LogHelper.LogException(exc);
                                     }
                                 }
                             }

@@ -85,6 +85,7 @@
 
 using Server.Accounting;
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 using Server.Network;
 using Server.Prompts;
@@ -223,7 +224,7 @@ namespace Server.Gumps
         {
             string name = Enum.GetName(typeof(AccessLevel), level);
             if (name != null)
-            { 
+            {
                 return Utility.SplitCamelCase(name);
             }
 

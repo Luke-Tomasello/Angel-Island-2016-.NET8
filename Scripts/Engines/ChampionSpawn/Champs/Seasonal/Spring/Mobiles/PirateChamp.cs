@@ -34,7 +34,7 @@
  *      Created; based largely on Neira stats
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Items;
 using System.Collections;
 

@@ -76,12 +76,9 @@
  *		I'm using the system from my shareware product WinCron.
  */
 
-using Server.Commands;
 using Server.Diagnostics;           // log helper
 using Server.Prompts;
-using System;
 using System.Collections;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Server.Engines.CronScheduler

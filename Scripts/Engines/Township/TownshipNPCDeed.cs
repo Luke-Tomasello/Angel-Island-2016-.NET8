@@ -31,6 +31,7 @@
  *		Now correctly sets lookouts to non-walking.
  */
 
+using Server.Diagnostics;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Regions;
@@ -251,7 +252,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -300,7 +301,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -350,7 +351,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -400,7 +401,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -602,7 +603,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -665,7 +666,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
         }
@@ -785,7 +786,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return false;
 

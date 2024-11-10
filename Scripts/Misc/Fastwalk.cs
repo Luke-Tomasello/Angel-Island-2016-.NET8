@@ -26,7 +26,7 @@
  *		Added a bit of flexibility and logging capabilities.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 
 namespace Server.Misc
 {

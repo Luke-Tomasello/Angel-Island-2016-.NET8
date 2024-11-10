@@ -35,7 +35,7 @@
  * 
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines;
 using Server.Network;
 using Server.Prompts;

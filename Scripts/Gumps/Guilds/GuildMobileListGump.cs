@@ -25,7 +25,7 @@
  *		Added guildmember's title to listing.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Guilds;
 using System.Collections;
 

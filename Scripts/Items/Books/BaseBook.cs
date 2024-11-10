@@ -50,7 +50,7 @@
  *		Merged in 1.0RC0 code.
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Network;
 using Server.Targeting;
 

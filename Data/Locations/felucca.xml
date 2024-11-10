@@ -144,6 +144,8 @@
 			<child name="Ophidian Fortress" x="1141" y="2594" z="0" />
 			<child name="Orc Fort (Cove)" x="2171" y="1332" z="0" />
 			<child name="Orc Stronghold (Yew)" x="635" y="1476" z="15" />
+			<child name="Bludchok'a-hai" x="988" y="1324" z="0" />
+			<child name="Orc Fort (Rat Valley)" x="1051" y="1382" z="0" /> 
 			<child name="Pirate Stronghold" x="2577" y="2239" z="17" />
 			<child name="Savage Fort" x="1261" y="894" z="3" />
 			<child name="Savage Stronghold" x="954" y="708" z="20" />

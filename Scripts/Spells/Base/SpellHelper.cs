@@ -146,6 +146,7 @@
  */
 
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Guilds;
 using Server.Items;
 using Server.Misc;
@@ -839,7 +840,7 @@ namespace Server.Spells
             {
                 if (PreviewHouseAt(caster.Map, loc))
                 {
-                    LogHelper.Cheater(caster, "Travel inside a PreviewHouse exploit.", true);
+                    RecordCheater.Cheater(caster, "Travel inside a PreviewHouse exploit.", true);
                     jail = true;
                     return false;
                 }
@@ -852,7 +853,7 @@ namespace Server.Spells
                 //  then it looks too much like an exploit to allow it.
                 if (iStack(caster, loc, 2) == false)
                 {
-                    LogHelper.Cheater(caster, "Tele onto a stack of movable items.", true);
+                    RecordCheater.Cheater(caster, "Tele onto a stack of movable items.", true);
                     return false;
                 }
             }
@@ -865,7 +866,7 @@ namespace Server.Spells
                 //  then it looks too much like an exploit to allow it.
                 if (iStack(caster, loc, 2) == false)
                 {
-                    LogHelper.Cheater(caster, "Mark on a stack of movable items.", true);
+                    RecordCheater.Cheater(caster, "Mark on a stack of movable items.", true);
                     return false;
                 }
             }
@@ -892,7 +893,7 @@ namespace Server.Spells
                 {
                     if (!caster.InLOS(loc))
                     {
-                        LogHelper.Cheater(caster, "Try to teleport through front door (LOS)", true);
+                        RecordCheater.Cheater(caster, "Try to teleport through front door (LOS)", true);
                         return false;
                     }
                 }
@@ -902,7 +903,7 @@ namespace Server.Spells
                 {
                     if (!caster.Map.CanSpawnMobile(caster.Location.X, caster.Location.Y, caster.Location.Z, CanFitFlags.requireSurface))
                     {
-                        LogHelper.Cheater(caster, "Try to teleport over front door (Z Axis)", true);
+                        RecordCheater.Cheater(caster, "Try to teleport over front door (Z Axis)", true);
                         return false;
                     }
                 }
@@ -917,7 +918,7 @@ namespace Server.Spells
                 //  if all the multis and regions do not match between src and dst, fail
                 if (HouseAt(caster.Map, loc) && CheckParity(caster.Map, caster.Location, loc) == false)
                 {
-                    LogHelper.Cheater(caster, "Multi to multi teleport exploit.", true);
+                    RecordCheater.Cheater(caster, "Multi to multi teleport exploit.", true);
                     return false;
                 }
             }

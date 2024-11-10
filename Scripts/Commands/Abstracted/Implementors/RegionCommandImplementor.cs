@@ -26,6 +26,7 @@
  */
 
 
+using Server.Diagnostics;
 using System.Collections;
 
 namespace Server.Commands

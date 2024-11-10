@@ -81,7 +81,7 @@
  *		Initial Creation
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 
 namespace Server.Mobiles

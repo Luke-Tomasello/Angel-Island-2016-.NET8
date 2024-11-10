@@ -56,6 +56,7 @@
 */
 
 using Server.ContextMenus;
+using Server.Diagnostics;
 using Server.Items;
 using Server.Regions;
 
@@ -120,7 +121,7 @@ namespace Server.Township
             }
             catch (Exception e)
             {
-                Server.Commands.LogHelper.LogException(e);
+                LogHelper.LogException(e);
             }
             return deleted;
         }
@@ -891,7 +892,7 @@ namespace Server.Township
                         }
                         catch (Exception exc)
                         {
-                            Server.Commands.LogHelper.LogException(exc);
+                            LogHelper.LogException(exc);
                         }
                     }
                     else

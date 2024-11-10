@@ -33,7 +33,7 @@
  *		"Server restarting in N minutes for maintenance..."
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Diagnostics;
 
 namespace Server.Misc

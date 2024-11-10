@@ -52,6 +52,7 @@
 using Server.Accounting;
 using Server.BountySystem;
 using Server.Commands;
+using Server.Diagnostics;
 using Server.Engines;
 using Server.Items;
 using Server.Mobiles;

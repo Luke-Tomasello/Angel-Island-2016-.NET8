@@ -29,10 +29,8 @@
  *	Corrected the OnSingleClick method to display the proper spell type for the wand.  
  */
 
-using Server.Network;
 using Server.Spells;
 using Server.Targeting;
-using System.Collections;
 
 namespace Server.Items
 {

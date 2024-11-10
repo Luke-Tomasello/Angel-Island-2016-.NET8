@@ -57,23 +57,14 @@
 using Server.Accounting;
 using Server.Diagnostics;
 using Server.Engines.ChampionSpawn;
-using Server.Engines.ResourcePool;
-using Server.Gumps;
 using Server.Items;
 //using Server.Items.Triggers;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
 //using TextCopy;
-using static Server.Utility;
 
 namespace Server.Commands
 {
@@ -86,7 +77,7 @@ namespace Server.Commands
             //CommandSystem.Register("RestoreBackpack", AccessLevel.Player, new CommandEventHandler(RestoreBackpack_OnCommand));
             //CommandSystem.Register("RefreshBankBox", AccessLevel.Owner, new CommandEventHandler(RefreshBankBox_OnCommand));
             //CommandSystem.Register("DistanceToSqrt", AccessLevel.GameMaster, new CommandEventHandler(DistanceToSqrt_OnCommand));
-            //CommandSystem.Register("LoadJump", AccessLevel.GameMaster, new CommandEventHandler(LoadJump_OnCommand));
+            CommandSystem.Register("LoadJump", AccessLevel.GameMaster, new CommandEventHandler(LoadJump_OnCommand));
             //CommandSystem.Register("LoadMEOPJump", AccessLevel.GameMaster, new CommandEventHandler(LoadMEOPJump_OnCommand));
             CommandSystem.Register("PreLaunch", AccessLevel.Owner, new CommandEventHandler(PreLaunch_OnCommand));
             //CommandSystem.Register("RecycleBin", AccessLevel.Owner, new CommandEventHandler(RecycleBin_OnCommand));
@@ -2226,7 +2217,7 @@ namespace Server.Commands
 
             return clients.Count;
         }
-#if false
+
         [Usage("LoadJump")]
         [Description("Load our 'jump' table with the creatures on this spawner.")]
         public static void LoadJump_OnCommand(CommandEventArgs e)
@@ -2259,19 +2250,18 @@ namespace Server.Commands
                 pm.JumpList = new ArrayList();
                 if (pm != null)
                 {
-                    if (targeted is ChampEngine champ)
+                    if (targeted is Clanmaster cm && cm.ChampSpawner != null)
+                    {
+                        OnTarget(from, cm.ChampSpawner);
+                        return;
+                    }
+                    else if (targeted is ChampEngine champ)
                     {
                         List<Mobile> list = new();
-                        if (champ.Monsters != null)
-                            foreach (Mobile m in champ.Monsters)
-                                if (m != null)
-                                    list.Add(m);
-
-                        if (champ.FreeMonsters != null)
-                            foreach (Mobile m in champ.FreeMonsters)
-                                if (m != null)
-                                    if (!list.Contains(m))
-                                        list.Add(m);
+                        if (champ.AllMonsters != null)
+                            foreach (object o in champ.AllMonsters)
+                                if (o is BaseCreature bc && bc.Deleted == false)
+                                    list.Add(bc);
 
                         if (list.Count != 0)
                         {
@@ -2303,18 +2293,18 @@ namespace Server.Commands
                         else
                             from.SendMessage("That spawner has spawned no objects.");
                     }
-                    else if (targeted is CustomRegionControl rc)
-                    {
-                        int count = 0;
-                        foreach (Rectangle3D rect in rc.CustomRegion.Coords)
-                        {
-                            pm.JumpList.Add(NormalizeZ(from.Map, rect.Start));
-                            pm.JumpList.Add(NormalizeZ(from.Map, rect.End));
-                            count += 2;
-                        }
+                    //else if (targeted is CustomRegionControl rc)
+                    //{
+                    //    int count = 0;
+                    //    foreach (Rectangle3D rect in rc.CustomRegion.Coords)
+                    //    {
+                    //        pm.JumpList.Add(NormalizeZ(from.Map, rect.Start));
+                    //        pm.JumpList.Add(NormalizeZ(from.Map, rect.End));
+                    //        count += 2;
+                    //    }
 
-                        from.SendMessage(string.Format("Jump table loaded with {0} objects.", count));
-                    }
+                    //    from.SendMessage(string.Format("Jump table loaded with {0} objects.", count));
+                    //}
                     else if (targeted is Runebook rb)
                     {
                         foreach (var o in rb.Entries)
@@ -2339,6 +2329,7 @@ namespace Server.Commands
             }
         }
 
+#if false
         [Usage("LoadMEOPJump")]
         [Description("Load our 'jump' table event objects that have been made permanent.")]
         public static void LoadMEOPJump_OnCommand(CommandEventArgs e)

@@ -39,7 +39,7 @@
  * 
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using System.Reflection;
 
 

@@ -39,7 +39,7 @@
  *		Created file
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Guilds;
 
 namespace Server.Items

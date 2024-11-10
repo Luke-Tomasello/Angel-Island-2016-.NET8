@@ -39,7 +39,7 @@
  */
 
 using Server.Accounting;
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 using System.Collections;
 using System.Xml;

@@ -25,7 +25,7 @@
  *      first time checkin
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Multis;        // HouseSign
 using Server.Targeting;
 

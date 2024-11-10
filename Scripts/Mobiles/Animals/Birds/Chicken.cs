@@ -60,7 +60,7 @@
  *		Automated removal of AoS resistance related function calls. 2 lines removed.
 */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Items;
 using Server.Multis;
 using System.Reflection;

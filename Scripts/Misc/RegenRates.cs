@@ -42,7 +42,7 @@
  *		this should help to find the cause. :-)
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Items;
 
 namespace Server.Misc

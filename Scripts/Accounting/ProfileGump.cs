@@ -57,7 +57,7 @@
  */
 
 using Server.Accounting;
-using Server.Commands;
+using Server.Diagnostics;
 using System.Text;
 
 namespace Server.Gumps

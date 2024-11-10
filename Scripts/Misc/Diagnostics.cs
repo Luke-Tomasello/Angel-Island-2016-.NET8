@@ -28,7 +28,7 @@
  *      First time checkin
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 
 namespace Server.Misc
 {

@@ -52,7 +52,7 @@
  *      Initial creation
  */
 
-using Server.Commands;
+using Server.Diagnostics;
 using Server.Gumps;
 using Server.Multis;
 using System.Collections;

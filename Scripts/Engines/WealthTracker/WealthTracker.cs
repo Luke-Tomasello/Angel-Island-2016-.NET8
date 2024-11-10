@@ -34,7 +34,7 @@
  *		- add tables
  */
 
-using Server.Commands;			// log helper
+using Server.Diagnostics;
 using Server.Network;
 using System.Collections;
 

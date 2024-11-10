@@ -33,6 +33,7 @@
  */
 
 using Server.Mobiles;
+using Server.Engines.ClanSystem;
 
 namespace Server.Engines.IOBSystem
 {
@@ -109,7 +110,7 @@ namespace Server.Engines.IOBSystem
             if (!IsIOBAligned(m1) || !IsIOBAligned(m2))
                 return false;
 
-            // must be an ememy if they are on different teams
+            // must be an enemy if they are on different teams
             if (GetIOBAlignment(m1) != GetIOBAlignment(m2))
                 return true;
 
@@ -123,7 +124,7 @@ namespace Server.Engines.IOBSystem
             if (!IsIOBAligned(m1) || !IsIOBAligned(m2))
                 return false;
 
-            // must be a friend if they are on the same teams
+            // must be a friend if they are the same kin
             if (GetIOBAlignment(m1) == GetIOBAlignment(m2))
                 return true;
 

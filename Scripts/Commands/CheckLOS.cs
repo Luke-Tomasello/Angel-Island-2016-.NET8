@@ -26,6 +26,7 @@
  */
 
 
+using Server.Diagnostics;
 using Server.Misc;						// TestCenter
 using Server.Targeting;
 
